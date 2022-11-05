@@ -13,11 +13,11 @@ namespace BulletinBoard.Data
             {
                 var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
                 context.Database.EnsureCreated();
-                if (context.Categorys.Any())
+                if (!context.Categories.Any())
                 {
                     for (int i = 1; i < Enum.GetNames(typeof(Categories)).Length; i++)
                     {
-                        var category = new Category { Categorie = ((Categories)i) };
+                        var category = new AttributeCategory { Categorie = ((Categories)i) };
                         context.Add(category);
                     }
                     context.SaveChanges();

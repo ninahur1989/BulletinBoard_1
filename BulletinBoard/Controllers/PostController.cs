@@ -17,7 +17,7 @@ namespace BulletinBoard.Controllers
 
         //[Authorize(Roles = UserRoles.User)]
         [HttpPost]
-        public IActionResult AddNewPost(Category type)
+        public IActionResult AddNewPost(AttributeCategory type)
         {
             //RedirectToAction("AddNewAnimal", "Animal");
             return RedirectToAction("AddNew" + type.Categorie.ToString(), type.Categorie.ToString());
@@ -45,9 +45,10 @@ namespace BulletinBoard.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Attribute()
+        public async Task<IActionResult> ChooseAttribute()
         {
-            return View(new Category());
+            return View(new AttributeCategory());
         }
     }
 }
+
