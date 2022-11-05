@@ -8,15 +8,15 @@ namespace BulletinBoard.Controllers
 {
     public class AnimalController : Controller
     {
-        private readonly IAnimalService _service;
+        private readonly ICategoryService<AnimalAttribute> _service;
 
-        public AnimalController(IAnimalService service)
+        public AnimalController(ICategoryService<AnimalAttribute> service)
         {
             _service = service;
         }
 
         [Authorize]
-        public async Task<IActionResult> AddNewAnimal()
+        public IActionResult AddNewAnimal()
         {
             return View(new AnimalAttribute());
         }

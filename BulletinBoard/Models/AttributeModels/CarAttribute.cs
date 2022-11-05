@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BulletinBoard.Models.AttributeModels
 {
-    public class CarAttribute
+    public class CarAttribute : IAttribute
     {
         private Categories _categorie = Categories.Car;
         public int Id { get; set; }

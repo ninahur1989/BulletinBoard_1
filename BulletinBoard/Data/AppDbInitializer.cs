@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.Data.Static;
 using BulletinBoard.Models;
 using Microsoft.AspNetCore.Identity;
+using BulletinBoard.Data.Enums;
 
 namespace BulletinBoard.Data
 {
@@ -12,6 +13,15 @@ namespace BulletinBoard.Data
             {
                 var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
                 context.Database.EnsureCreated();
+                if (context.Categorys.Any())
+                {
+                    for (int i = 1; i < Enum.GetNames(typeof(Categories)).Length; i++)
+                    {
+                        var category = new Category { Categorie = ((Categories)i) };
+                        context.Add(category);
+                    }
+                    context.SaveChanges();
+                }
             }
         }
         public static async Task SeedUsersAndRolesAsync(IApplicationBuilder applicationBuilder)

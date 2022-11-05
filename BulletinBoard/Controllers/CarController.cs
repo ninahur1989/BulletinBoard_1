@@ -8,15 +8,15 @@ namespace BulletinBoard.Controllers
 {
     public class CarController : Controller
     {
-        private readonly ICarService _service;
+        private readonly ICategoryService<CarAttribute> _service;
 
-        public CarController(ICarService service)
+        public CarController(ICategoryService<CarAttribute> service)
         {
             _service = service;
         }
 
         [Authorize]
-        public async Task<IActionResult> AddNewCar()
+        public IActionResult AddNewCar()
         {
             return View(new CarAttribute());
         }

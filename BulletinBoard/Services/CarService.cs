@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BulletinBoard.Services
 {
-    public class CarService : ICarService
+    public class CarService : ICategoryService<CarAttribute>
     {
         private readonly AppDbContext _context;
 

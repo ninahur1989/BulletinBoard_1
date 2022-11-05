@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BulletinBoard.Services
 {
-    public class AnimalService : IAnimalService
+    public class AnimalService : ICategoryService<AnimalAttribute> 
     {
         private readonly AppDbContext _context;
 
@@ -15,23 +15,24 @@ namespace BulletinBoard.Services
             _context = context;
         }
 
-        public async Task AddAsync(AnimalAttribute animal, string userId)
+        public async Task AddAsync(AnimalAttribute item, string userId) 
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
             if (user != null)
             {
-                animal.Post.CreatedDate = DateTime.UtcNow;
-                animal.Post.ExpiredDate = DateTime.UtcNow.AddDays(30);
-                animal.Post.User = user;
-                animal.Post.UserId = userId;
-                animal.Post.IsEnable = true;
-                animal.Post.Location = user.Location;
+                item.Post.CreatedDate = DateTime.UtcNow;
+                item.Post.ExpiredDate = DateTime.UtcNow.AddDays(30);
+                item.Post.User = user;
+                item.Post.UserId = userId;
+                item.Post.IsEnable = true;
+                item.Post.Location = user.Location;
 
 
-                await _context.AddAsync(animal);
+                await _context.AddAsync(item);
                 await _context.SaveChangesAsync();
             }
         }
+
     }
 }

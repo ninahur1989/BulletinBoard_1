@@ -20,7 +20,7 @@ namespace BulletinBoard.Controllers
         public IActionResult AddNewPost(Category type)
         {
             //RedirectToAction("AddNewAnimal", "Animal");
-            return RedirectToAction("AddNew" + type.Categories.ToString(), type.Categories.ToString());
+            return RedirectToAction("AddNew" + type.Categorie.ToString(), type.Categorie.ToString());
 
         }
 
