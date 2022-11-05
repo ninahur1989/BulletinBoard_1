@@ -1,0 +1,64 @@
+﻿@using BulletinBoard.Models.AttributeModels
+@model AnimalAttribute
+@{
+    ViewData["Title"] = "Create a new Post";
+}
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4>Create a new Animal</h4>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <div>
+                    <span>Categriy: @Model.Categorie</span>
+                    <a class="btn btn-primary btn-sm" asp-area="" asp-controller="Post" asp-action="Attribute">Change Category</a>
+                </div>
+               
+                <form asp-action="AddNewAnimal" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Post.Titile" class="control-label"></label>
+                                <input asp-for="Post.Titile" class="form-control" />
+                                <span asp-validation-for="Post.Titile" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Post.Price" class="control-label"></label>
+                                <input asp-for="Post.Price" type="number" class="form-control" />
+                                <span asp-validation-for="Post.Price" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Age" class="control-label"></label>
+                                <input asp-for="Age" type="number" class="form-control" />
+                                <span asp-validation-for="Age" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Post.Description" class="control-label"></label>
+                                <textarea asp-for="Post.Description" class="form-control"></textarea>
+                                <span asp-validation-for="Post.Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="image-preview-container">
+                        <div class="preview">
+                            <img id="preview-selected-image" />
+                        </div>
+                        <label for="file-upload">Upload Image</label>
+                        <input type="file" id="file-upload" accept="image/*" onchange="previewImage(event);" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-outline-success float-right" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
