@@ -1,4 +1,5 @@
 ﻿using BulletinBoard.Data;
+using BulletinBoard.Data.ViewModels;
 using BulletinBoard.Models;
 using BulletinBoard.Models.AttributeModels;
 using BulletinBoard.Services;
@@ -26,7 +27,7 @@ namespace BulletinBoard
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ICategoryService<CarAttribute>, CarService>();
-            services.AddScoped<ICategoryService<AnimalAttribute>, AnimalService>();
+            services.AddScoped<ICategoryService<AnimalAttributeVM>, AnimalService>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
             services.AddMemoryCache();

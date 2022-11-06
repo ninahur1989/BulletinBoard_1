@@ -24,8 +24,12 @@ namespace BulletinBoard.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNewCar(CarAttribute model)
         {
-            await _service.AddAsync(model, User.FindFirstValue(ClaimTypes.NameIdentifier));
-            return RedirectToAction("Index", "Home");
+            if (ModelState.IsValid)
+            {
+                await _service.AddAsync(model, User.FindFirstValue(ClaimTypes.NameIdentifier));
+                return RedirectToAction("Index", "Home");
+            }
+            return View(model);
         }
     }
 }

@@ -5,11 +5,17 @@ namespace BulletinBoard.Models.AttributeModels
 {
     public class AnimalAttribute : IAttribute
     {
-        private Categories _categorie = Categories.Animal;
+        public AnimalAttribute()
+        {
+            Category = new AttributeCategory() { ThisCategory = Categories.Animal };
+            AnimalAttributeId = (int)Categories.Animal;
+        }
 
         public int Id { get; set; }
-        public int Age { get; set; }
-        public Categories Categorie { get { return _categorie; } }
+        public byte Age { get; set; }
+
+        public int AnimalAttributeId { get; set; }
+        public AttributeCategory Category { get;  }
 
         public int PostId { get; set; }
         [ForeignKey(nameof(PostId))]

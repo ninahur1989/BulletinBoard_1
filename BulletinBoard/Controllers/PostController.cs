@@ -1,5 +1,5 @@
 ﻿using BulletinBoard.Data.ViewModels;
-using BulletinBoard.Models;
+using BulletinBoard.Models.AttributeModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -20,7 +20,7 @@ namespace BulletinBoard.Controllers
         public IActionResult AddNewPost(AttributeCategory type)
         {
             //RedirectToAction("AddNewAnimal", "Animal");
-            return RedirectToAction("AddNew" + type.Categorie.ToString(), type.Categorie.ToString());
+            return RedirectToAction("AddNew" + type.ThisCategory.ToString(), type.ThisCategory.ToString());
 
         }
 

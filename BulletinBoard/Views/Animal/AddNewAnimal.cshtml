@@ -1,5 +1,5 @@
-﻿@using BulletinBoard.Models.AttributeModels
-@model AnimalAttribute
+﻿@using BulletinBoard.Data.ViewModels
+@model AnimalAttributeVM
 @{
     ViewData["Title"] = "Create a new Post";
 }
@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-8 offset-2">
                 <div>
-                    <span>Categriy: @Model.Categorie</span>
+                    <span>Categriy: @Model.Category.ThisCategory</span>
                     <a class="btn btn-primary btn-sm" asp-area="" asp-controller="Post" asp-action="Attribute">Change Category</a>
                 </div>
                

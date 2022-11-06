@@ -2,6 +2,7 @@
 using BulletinBoard.Models;
 using Microsoft.AspNetCore.Identity;
 using BulletinBoard.Data.Enums;
+using BulletinBoard.Models.AttributeModels;
 
 namespace BulletinBoard.Data
 {
@@ -15,9 +16,9 @@ namespace BulletinBoard.Data
                 context.Database.EnsureCreated();
                 if (!context.Categories.Any())
                 {
-                    for (int i = 1; i < Enum.GetNames(typeof(Categories)).Length; i++)
+                    for (int i = 1; i <= Enum.GetNames(typeof(Categories)).Length; i++)
                     {
-                        var category = new AttributeCategory { Categorie = ((Categories)i) };
+                        var category = new AttributeCategory { ThisCategory = ((Categories)i) };
                         context.Add(category);
                     }
                     context.SaveChanges();
