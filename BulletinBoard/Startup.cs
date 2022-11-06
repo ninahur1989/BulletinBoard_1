@@ -26,7 +26,7 @@ namespace BulletinBoard
 
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<ICategoryService<CarAttribute>, CarService>();
+            services.AddScoped<ICategoryService<CarAttributeVM>, CarService>();
             services.AddScoped<ICategoryService<AnimalAttributeVM>, AnimalService>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();

@@ -14,7 +14,7 @@ namespace BulletinBoard.Data
             {
                 var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
                 context.Database.EnsureCreated();
-                if (!context.Categories.Any())
+                if (!context.AttributeCategories.Any())
                 {
                     for (int i = 1; i <= Enum.GetNames(typeof(Categories)).Length; i++)
                     {

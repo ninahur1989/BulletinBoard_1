@@ -1,4 +1,5 @@
-﻿using BulletinBoard.Models.AttributeModels;
+﻿using BulletinBoard.Data.ViewModels;
+using BulletinBoard.Models.AttributeModels;
 using BulletinBoard.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,9 +9,9 @@ namespace BulletinBoard.Controllers
 {
     public class CarController : Controller
     {
-        private readonly ICategoryService<CarAttribute> _service;
+        private readonly ICategoryService<CarAttributeVM> _service;
 
-        public CarController(ICategoryService<CarAttribute> service)
+        public CarController(ICategoryService<CarAttributeVM> service)
         {
             _service = service;
         }
@@ -18,11 +19,11 @@ namespace BulletinBoard.Controllers
         [Authorize]
         public IActionResult AddNewCar()
         {
-            return View(new CarAttribute());
+            return View(new CarAttributeVM());
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewCar(CarAttribute model)
+        public async Task<IActionResult> AddNewCar(CarAttributeVM model)
         {
             if (ModelState.IsValid)
             {

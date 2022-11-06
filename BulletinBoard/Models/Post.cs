@@ -18,6 +18,10 @@ namespace BulletinBoard.Models
         public virtual ApplicationUser User { get; set; }
 
 
+        public int Attribute_PostId { get; set; }
+        [ForeignKey(nameof(Attribute_PostId))]
+        public virtual Attribute_Post MainAttribute_Post { get; set; }
+
         //[NotMapped]
         //public IFormFile? ImageFile { get; set; }
     }

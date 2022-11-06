@@ -24,27 +24,60 @@ namespace BulletinBoard.Services
 
             if (user != null)
             {
-                var newItem = new AnimalAttribute()
+                var newItem = new Post()
                 {
-                    Age = item.Age,
-                    AnimalAttributeId = (int)Categories.Animal,
-                    Post = new Post()
+                    Price = item.Post.Price,
+                    Description = item.Post.Description,
+                    Titile = item.Post.Titile,
+                    CreatedDate = DateTime.UtcNow,
+                    ExpiredDate = DateTime.UtcNow.AddDays(30),
+                    User = user,
+                    UserId = userId,
+                    IsEnable = true,
+                    Location = user.Location,
+                    MainAttribute_Post = new Attribute_Post()
                     {
-                        Price = item.Post.Price,
-                        Description = item.Post.Description,
-                        Titile = item.Post.Titile,
-                        CreatedDate = DateTime.UtcNow,
-                        ExpiredDate = DateTime.UtcNow.AddDays(30),
-                        User = user,
-                        UserId = userId,
-                        IsEnable = true,
-                        Location = user.Location,
+                        AnimalAttribute = new AnimalAttribute()
+                        {
+                            Age = item.Age
+                        }
                     }
+
                 };
 
+
+
+
+                //var newItem = new AnimalAttribute()
+                //{
+                //    Age = item.Age,
+                //    AnimalAttributeId = (int)Categories.Animal,
+                //    MainPost = new Attribute_Post()
+                //    {
+                //        MainPost = new Post()
+                //        {
+                //            Price = item.Post.Price,
+                //            Description = item.Post.Description,
+                //            Titile = item.Post.Titile,
+                //            CreatedDate = DateTime.UtcNow,
+                //            ExpiredDate = DateTime.UtcNow.AddDays(30),
+                //            User = user,
+                //            UserId = userId,
+                //            IsEnable = true,
+                //            Location = user.Location,
+                //        }
+                //    }
+
+                //};
+
+                var a = _context.Attribute_Posts.Where(x=>x.Id != null).ToList();
                 await _context.AddAsync(newItem);
-                user.Posts.Add(newItem.Post);
+                user.Posts.Add(newItem);
                 await _context.SaveChangesAsync();
+
+                //await _context.AddAsync(newItem);
+                //user.Posts.Add(newItem.MainPost.MainPost);
+                //await _context.SaveChangesAsync();
             }
         }
     }
