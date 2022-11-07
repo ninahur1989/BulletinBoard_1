@@ -9,14 +9,12 @@ namespace BulletinBoard.Data.ViewModels
         public AnimalAttributeVM()
         {
             Category = new AttributeCategory() { ThisCategory = Categories.Animal};
-            CategoryId = (int)Categories.Animal;
         }
 
         [Required(ErrorMessage = "Age is required")]
         [Range(1,100)]
         public byte Age { get; set; }
 
-        public int CategoryId { get; set; }
         public AttributeCategory Category { get; }
 
         public  PostVM Post { get; set; }

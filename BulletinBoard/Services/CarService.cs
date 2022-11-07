@@ -54,8 +54,7 @@ namespace BulletinBoard.Services
                 //car.Post.Location = user.Location;
 
 
-                var a = _context.Posts.Where(x => x.Id != null).ToList();
-                var b = _context.Attribute_Posts.Where(x => x.Id != null).ToList();
+
                 await _context.AddAsync(newItem);
                 user.Posts.Add(newItem);
                 await _context.SaveChangesAsync();

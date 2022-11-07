@@ -2,9 +2,11 @@
 using BulletinBoard.Data.Static;
 using BulletinBoard.Data.ViewModels;
 using BulletinBoard.Models;
+using BulletinBoard.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BulletinBoard.Controllers
 {
@@ -12,19 +14,13 @@ namespace BulletinBoard.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly AppDbContext _context;
+        private readonly IAccountService _accountService;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AppDbContext context)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IAccountService accountService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _context = context;
-        }
-
-        public async Task<IActionResult> Users()
-        {
-            var users = await _context.Users.ToListAsync();
-            return View(users);
+            _accountService = accountService;
         }
 
         public IActionResult Login() => View(new LoginVM());
@@ -90,9 +86,15 @@ namespace BulletinBoard.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult AccessDenied(string ReturnUrl)
+        public IActionResult AccessDenied(string returnUrl)
         {
             return View();
+        }
+
+        public async Task<IActionResult> GetPosts()
+        {
+            var posts = await _accountService.GetMyPosts(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return View(posts);
         }
     }
 }

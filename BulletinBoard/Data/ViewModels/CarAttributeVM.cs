@@ -9,7 +9,6 @@ namespace BulletinBoard.Data.ViewModels
         public CarAttributeVM()
         {
             Category = new AttributeCategory() { ThisCategory = Categories.Car };
-            CategoryId = (int)Categories.Car;
         }
 
         [Required(ErrorMessage = "GraduationYear is required")]
@@ -21,7 +20,6 @@ namespace BulletinBoard.Data.ViewModels
         [Required(ErrorMessage = "MileagesCar is required")]
         public float MileagesCar { get; set; }
 
-        public int CategoryId { get; set; }
         public AttributeCategory Category { get; }
 
         public PostVM Post { get; set; }
