@@ -38,11 +38,19 @@ namespace BulletinBoard.Controllers
             var post = await _postService.GetPostByIdAsync(id);
 
             if (post == null)
-            {
                 return NotFound();
-            }
 
             return View(post);
+        }
+
+        public async Task<IActionResult> Index(string? searchTitile, string? searchLocation)
+        {
+            var posts = await _postService.SearchPostAsync(searchTitile, searchLocation);
+
+            if(posts == null)
+                return NotFound();
+
+            return View(posts);
         }
     }
 }

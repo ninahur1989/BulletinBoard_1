@@ -1,4 +1,28 @@
 ﻿@model Post
-<div>
-    @Model.Titile
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="card mb-12">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-header text-white bg-info">
+                        <p class="card-text">
+                            <h5 class="card-title">
+                                @Model.Titile
+                            </h5>
+                        </p>
+                    </div>
+                    <div class="card-header text-white bg-info">
+                        <p class="card-text">
+                            <h5 class="card-title">
+                                @Model.Price
+                            </h5>
+                        </p>
+                    </div>
+                </div>
+               @* <div class="col-md-4">
+                    <img src="@Model.ImageURL" width="100%" alt="@Model.Name">
+                </div>*@
+            </div>
+        </div>
+    </div>
 </div>

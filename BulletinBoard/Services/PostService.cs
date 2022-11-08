@@ -22,5 +22,17 @@ namespace BulletinBoard.Services
             var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
             return post;
         }
+
+        public async Task<List<Post?>> SearchPostAsync(string? searchTitile, string? searchLocation)
+        {
+            if (string.IsNullOrWhiteSpace(searchTitile))
+                searchTitile = "";
+
+            if (string.IsNullOrWhiteSpace(searchLocation))
+                searchLocation = "";
+
+            var posts = await _context.Posts.Where(x => x.Titile.ToLower().StartsWith(searchTitile)  && x.Location.ToLower().StartsWith(searchLocation)).ToListAsync();
+            return posts;
+        }
     }
 }

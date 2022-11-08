@@ -1,0 +1,50 @@
+﻿@model List<Post>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="css-1pze2fb">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header text-white bg-info">
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @item.Titile
+                                </h5>
+                            </p>
+                        </div>
+                        <div>
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @item.Price
+                                </h5>
+                            </p>
+                        </div>
+                        <div>
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @item.CreatedDate -
+                                </h5>
+                            </p>
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @item.ExpiredDate
+                                </h5>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer ">
+                            <p class="card-text">
+                                <a class="btn btn-outline-primary float-right" asp-controller="Post" asp-action="Details" asp-route-id="@item.Id">
+                                    <i class="bi bi-eye-fill"></i> Show Details
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
