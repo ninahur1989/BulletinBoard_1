@@ -1,4 +1,5 @@
 ﻿using BulletinBoard.Data;
+using BulletinBoard.Data.Enums;
 using BulletinBoard.Data.ViewModels;
 using BulletinBoard.Models;
 using BulletinBoard.Models.AttributeModels;
@@ -42,18 +43,9 @@ namespace BulletinBoard.Services
                             VINNumber = car.VINNumber,
                             GraduationYear = car.GraduationYear,
                         }
-                    }
-
+                    },
+                    Status = PostStatus.Active
                 };
-
-                //car.Post.CreatedDate = DateTime.UtcNow;
-                //car.Post.ExpiredDate = DateTime.UtcNow.AddDays(30);
-                //car.Post.User = user;
-                //car.Post.UserId = userId;
-                //car.Post.IsEnable = true;
-                //car.Post.Location = user.Location;
-
-
 
                 await _context.AddAsync(newItem);
                 user.Posts.Add(newItem);

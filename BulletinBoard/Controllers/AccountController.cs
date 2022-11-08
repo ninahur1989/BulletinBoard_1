@@ -91,9 +91,14 @@ namespace BulletinBoard.Controllers
             return View();
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> GetPosts()
         {
-            var posts = await _accountService.GetMyPosts(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var posts = await _accountService.GetMyPostsAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             return View(posts);
         }
     }

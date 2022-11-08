@@ -41,7 +41,8 @@ namespace BulletinBoard.Services
                         {
                             Age = item.Age
                         }
-                    }
+                    },
+                    Status = PostStatus.Active
                 };
 
                 await _context.AddAsync(newItem);

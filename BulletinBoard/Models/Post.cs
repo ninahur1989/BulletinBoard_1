@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using BulletinBoard.Data.Enums;
+using BulletinBoard.Models.AttributeModels;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BulletinBoard.Models
 {
@@ -21,6 +23,13 @@ namespace BulletinBoard.Models
         public int Attribute_PostId { get; set; }
         [ForeignKey(nameof(Attribute_PostId))]
         public virtual Attribute_Post MainAttribute_Post { get; set; }
+
+
+        public PostStatus Status { get; set; }
+
+        public Categories Category { get; set; }
+
+
 
         //[NotMapped]
         //public IFormFile? ImageFile { get; set; }

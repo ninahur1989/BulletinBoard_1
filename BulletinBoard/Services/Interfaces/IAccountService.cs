@@ -2,8 +2,9 @@
 
 namespace BulletinBoard.Services.Interfaces
 {
-    public interface IAccountService
+    public interface IAccountService 
     {
-        public Task<List<Post>> GetMyPosts(string userId);
+        public Task<List<Post>> GetMyPostsAsync(string userId);
+
     }
 }
