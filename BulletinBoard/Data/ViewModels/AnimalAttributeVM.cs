@@ -1,4 +1,5 @@
 ﻿using BulletinBoard.Data.Enums;
+using BulletinBoard.Models;
 using BulletinBoard.Models.AttributeModels;
 using System.ComponentModel.DataAnnotations;
 

@@ -1,21 +1,27 @@
 ﻿using BulletinBoard.Data;
 using BulletinBoard.Data.Enums;
+using BulletinBoard.Data.Static;
 using BulletinBoard.Data.ViewModels;
 using BulletinBoard.Models;
 using BulletinBoard.Models.AttributeModels;
 using BulletinBoard.Services.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
+using System.Net.Http.Headers;
 
 namespace BulletinBoard.Services
 {
     public class AnimalService : ICategoryService<AnimalAttributeVM, AnimalAttribute>
     {
+        private readonly IFileService _fileService;
         private readonly AppDbContext _context;
 
 
-        public AnimalService(AppDbContext context)
+        public AnimalService(AppDbContext context, IFileService fileService)
         {
             _context = context;
+            _fileService = fileService;
         }
 
         public async Task AddAsync(AnimalAttributeVM item, string userId)
@@ -46,8 +52,9 @@ namespace BulletinBoard.Services
                     AttributeCategoryId = (int)Categories.Animal
                 };
 
-                user.UserPostList.Add(newItem);
+                newItem.Images = await _fileService.UploadAsync(item.Post.ImageFile, userId);
 
+                user.UserPostList.Add(newItem);
 
 
                 await _context.AddAsync(newItem);
@@ -86,7 +93,7 @@ namespace BulletinBoard.Services
 
             if (animalPost != null)
             {
-                return new AnimalAttributeVM()
+                var vm = new AnimalAttributeVM()
                 {
                     Id = animalPost.Id,
                     Age = animalPost.Age,
@@ -94,9 +101,16 @@ namespace BulletinBoard.Services
                     {
                         Description = animalPost.MainPost.MainPost.Description,
                         Price = animalPost.MainPost.MainPost.Price,
-                        Titile = animalPost.MainPost.MainPost.Titile
-                    }
+                        Titile = animalPost.MainPost.MainPost.Titile,
+                        Images = animalPost.MainPost.MainPost.Images,
+                    },
+
                 };
+                var imagelist = new List<IFormFile?>(8);
+
+                for (int i = 0; i < 8; i++) imagelist.Add(null);
+
+                return vm;
             }
 
             return null;

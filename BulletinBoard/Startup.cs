@@ -26,6 +26,7 @@ namespace BulletinBoard
 
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IFileService, FileService>();
             services.AddScoped<ICategoryService<CarAttributeVM, CarAttribute>, CarService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IPostService, PostService>();

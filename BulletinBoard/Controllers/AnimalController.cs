@@ -4,6 +4,7 @@ using BulletinBoard.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Drawing;
 
 namespace BulletinBoard.Controllers
 {
@@ -11,7 +12,7 @@ namespace BulletinBoard.Controllers
     {
         private readonly ICategoryService<AnimalAttributeVM, AnimalAttribute> _service;
 
-        public AnimalController(ICategoryService<AnimalAttributeVM, AnimalAttribute> service)
+        public AnimalController(ICategoryService<AnimalAttributeVM, AnimalAttribute> service )
         {
             _service = service;
         }
@@ -55,6 +56,7 @@ namespace BulletinBoard.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(AnimalAttributeVM model)
         {
+
             if (ModelState.IsValid)
             {
                 bool result = await _service.EditAsync(model);

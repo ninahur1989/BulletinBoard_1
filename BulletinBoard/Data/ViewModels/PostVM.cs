@@ -1,5 +1,6 @@
 ﻿
 using BulletinBoard.Data.Enums;
+using BulletinBoard.Models;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,6 +18,13 @@ namespace BulletinBoard.Data.ViewModels
         [Required(ErrorMessage = "Description is required")]
         [MinLength(1), MaxLength(9000)]
         public string Description { get; set; }
+
+
+        [MinLength(1), MaxLength(7)]
+        [Required(ErrorMessage = "Image is required")]
+        public List<IFormFile?> ImageFile { get; set; }
+
+        public List<Image?>? Images { get; set; }
 
     }
 }

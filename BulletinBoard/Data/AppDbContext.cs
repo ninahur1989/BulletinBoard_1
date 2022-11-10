@@ -13,6 +13,7 @@ namespace BulletinBoard.Data
         }
 
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Image> Images { get; set; }
         public DbSet<AttributeCategory> AttributeCategories { get; set; }
         public DbSet<AnimalAttribute> AnimalsAttribute { get; set; }
         public DbSet<CarAttribute> CarsAttribute { get; set; }

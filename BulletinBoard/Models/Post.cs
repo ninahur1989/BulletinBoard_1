@@ -32,7 +32,6 @@ namespace BulletinBoard.Models
         [ForeignKey(nameof(AttributeCategoryId))]
         public virtual AttributeCategory Category { get; set; }
 
-        //[NotMapped]
-        //public IFormFile? ImageFile { get; set; }
+        public virtual List<Image> Images { get; set; }
     }
 }
