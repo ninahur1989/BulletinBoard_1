@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BulletinBoard.Models
+namespace BulletinBoard.Models.UserModels
 {
     public class ApplicationUser : IdentityUser
     {
@@ -11,6 +12,6 @@ namespace BulletinBoard.Models
         [Display(Name = "Your location")]
         public string Location { get; set; }
 
-        public virtual List<Post> Posts { get; set; }
+        public virtual List<Post> UserPostList { get; set; }
     }
 }

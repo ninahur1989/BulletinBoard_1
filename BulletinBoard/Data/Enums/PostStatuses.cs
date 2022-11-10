@@ -1,6 +1,6 @@
 ﻿namespace BulletinBoard.Data.Enums
 {
-    public enum PostStatus
+    public enum PostStatuses
     {
         Active = 1,
         Inactive,

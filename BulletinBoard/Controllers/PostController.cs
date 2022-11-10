@@ -19,11 +19,21 @@ namespace BulletinBoard.Controllers
             _postService = postService;
         }
 
+        public async Task<IActionResult> Index(string? searchTitile, string? searchLocation)
+        {
+            var posts = await _postService.SearchPostAsync(searchTitile, searchLocation);
+
+            if (posts == null)
+                return NotFound();
+
+            return View(posts);
+        }
+
         //[Authorize(Roles = UserRoles.User)]
         [HttpPost]
         public IActionResult AddNewPost(AttributeCategory type)
         {
-            return RedirectToAction("AddNew" + type.ThisCategory.ToString(), type.ThisCategory.ToString());
+            return RedirectToAction("AddNew" + type.Category.ToString(), type.Category.ToString());
 
         }
 
@@ -43,14 +53,21 @@ namespace BulletinBoard.Controllers
             return View(post);
         }
 
-        public async Task<IActionResult> Index(string? searchTitile, string? searchLocation)
+        public IActionResult Edit(int id, Categories category)
         {
-            var posts = await _postService.SearchPostAsync(searchTitile, searchLocation);
+            return RedirectToAction("Edit", category.ToString(), new { @id = id });
+        }
 
-            if(posts == null)
-                return NotFound();
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _postService.DeletePostAsync(id, User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return RedirectToAction("Index", "Account");
+        }
 
-            return View(posts);
+        public async Task<IActionResult> Disable(int id)
+        {
+            await _postService.DisablePostAsync(id, User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return RedirectToAction("Index", "Account");
         }
     }
 }

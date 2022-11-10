@@ -1,7 +1,7 @@
 ﻿using BulletinBoard.Data;
 using BulletinBoard.Data.ViewModels;
-using BulletinBoard.Models;
 using BulletinBoard.Models.AttributeModels;
+using BulletinBoard.Models.UserModels;
 using BulletinBoard.Services;
 using BulletinBoard.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -26,10 +26,10 @@ namespace BulletinBoard
 
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<ICategoryService<CarAttributeVM>, CarService>();
+            services.AddScoped<ICategoryService<CarAttributeVM, CarAttribute>, CarService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IPostService, PostService>();
-            services.AddScoped<ICategoryService<AnimalAttributeVM>, AnimalService>();
+            services.AddScoped<ICategoryService<AnimalAttributeVM, AnimalAttribute>, AnimalService>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
             services.AddMemoryCache();

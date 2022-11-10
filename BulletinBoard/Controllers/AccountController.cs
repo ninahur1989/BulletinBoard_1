@@ -1,7 +1,7 @@
 ﻿using BulletinBoard.Data;
 using BulletinBoard.Data.Static;
 using BulletinBoard.Data.ViewModels;
-using BulletinBoard.Models;
+using BulletinBoard.Models.UserModels;
 using BulletinBoard.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -71,6 +71,7 @@ namespace BulletinBoard.Controllers
                 UserName = registerVM.EmailAddress,
                 Location = registerVM.Location,
             };
+
 
             var newUserResponse = await _userManager.CreateAsync(newUser, registerVM.Password);
 

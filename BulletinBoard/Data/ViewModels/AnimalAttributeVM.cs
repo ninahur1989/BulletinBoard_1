@@ -6,16 +6,11 @@ namespace BulletinBoard.Data.ViewModels
 {
     public class AnimalAttributeVM
     {
-        public AnimalAttributeVM()
-        {
-            Category = new AttributeCategory() { ThisCategory = Categories.Animal};
-        }
+        public int? Id { get; set; }
 
         [Required(ErrorMessage = "Age is required")]
         [Range(1,100)]
         public byte Age { get; set; }
-
-        public AttributeCategory Category { get; }
 
         public  PostVM Post { get; set; }
     }

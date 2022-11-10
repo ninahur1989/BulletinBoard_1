@@ -9,9 +9,9 @@ namespace BulletinBoard.Controllers
 {
     public class AnimalController : Controller
     {
-        private readonly ICategoryService<AnimalAttributeVM> _service;
+        private readonly ICategoryService<AnimalAttributeVM, AnimalAttribute> _service;
 
-        public AnimalController(ICategoryService<AnimalAttributeVM> service)
+        public AnimalController(ICategoryService<AnimalAttributeVM, AnimalAttribute> service)
         {
             _service = service;
         }
@@ -22,6 +22,15 @@ namespace BulletinBoard.Controllers
             return View(new AnimalAttributeVM());
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var posts = await _service.GetAllAsync();
+
+            if(posts == null)
+                return NotFound();
+            return View(posts);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddNewAnimal(AnimalAttributeVM model)
         {
@@ -29,6 +38,31 @@ namespace BulletinBoard.Controllers
             {
                 await _service.AddAsync(model, User.FindFirstValue(ClaimTypes.NameIdentifier));
                 return RedirectToAction("Index", "Home");
+            }
+            return View( model);
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var animalAttributeVM = await _service.GetVMAsync(id , User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (animalAttributeVM == null) 
+                return NotFound();
+
+            return View(animalAttributeVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(AnimalAttributeVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                bool result = await _service.EditAsync(model);
+
+                if(result)
+                    return RedirectToAction("Index", "Home");
+
+                return View(model);
             }
             return View(model);
         }

@@ -1,5 +1,6 @@
 ﻿using BulletinBoard.Data.Enums;
 using BulletinBoard.Models.AttributeModels;
+using BulletinBoard.Models.UserModels;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BulletinBoard.Models
@@ -19,17 +20,17 @@ namespace BulletinBoard.Models
         [ForeignKey(nameof(UserId))]
         public virtual ApplicationUser User { get; set; }
 
-
         public int Attribute_PostId { get; set; }
         [ForeignKey(nameof(Attribute_PostId))]
         public virtual Attribute_Post MainAttribute_Post { get; set; }
 
+        public int PostStatusId { get; set; }
+        [ForeignKey(nameof(PostStatusId))]
+        public virtual PostStatus Status { get; set; }
 
-        public PostStatus Status { get; set; }
-
-        public Categories Category { get; set; }
-
-
+        public int AttributeCategoryId { get; set; }
+        [ForeignKey(nameof(AttributeCategoryId))]
+        public virtual AttributeCategory Category { get; set; }
 
         //[NotMapped]
         //public IFormFile? ImageFile { get; set; }

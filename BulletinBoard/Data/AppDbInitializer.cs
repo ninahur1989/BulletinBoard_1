@@ -3,6 +3,7 @@ using BulletinBoard.Models;
 using Microsoft.AspNetCore.Identity;
 using BulletinBoard.Data.Enums;
 using BulletinBoard.Models.AttributeModels;
+using BulletinBoard.Models.UserModels;
 
 namespace BulletinBoard.Data
 {
@@ -18,8 +19,17 @@ namespace BulletinBoard.Data
                 {
                     for (int i = 1; i <= Enum.GetNames(typeof(Categories)).Length; i++)
                     {
-                        var category = new AttributeCategory { ThisCategory = ((Categories)i) };
+                        var category = new AttributeCategory { Category = (Categories)i, CategoryName = Enum.GetName(typeof(Categories), i), Id = i };
                         context.Add(category);
+                    }
+                    context.SaveChanges();
+                }
+                if (!context.PostStatuses.Any())
+                {
+                    for (int i = 1; i <= Enum.GetNames(typeof(PostStatuses)).Length; i++)
+                    {
+                        var status = new PostStatus { Status = (PostStatuses)i, StatusName = Enum.GetName(typeof(PostStatuses), i), Id = i };
+                        context.Add(status);
                     }
                     context.SaveChanges();
                 }
@@ -50,8 +60,7 @@ namespace BulletinBoard.Data
                         UserName = "admin-user",
                         Email = adminUserEmail,
                         EmailConfirmed = true,
-                        Location = "Main office, KYIV"
-
+                        Location = "Main office, KYIV",
                     };
                     await userManager.CreateAsync(newAdminUser, "$%32gdsDSs2");
                     await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
@@ -68,8 +77,9 @@ namespace BulletinBoard.Data
                         UserName = "app-user",
                         Email = appUserEmail,
                         EmailConfirmed = true,
-                        Location = "Main office, KYIV"
+                        Location = "Main office, KYIV",
                     };
+
                     await userManager.CreateAsync(newAppUser, "$%32gdsDSs2");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.User);
                 }

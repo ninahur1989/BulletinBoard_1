@@ -46,6 +46,11 @@
                                     <i class="bi bi-eye-fill"></i> Show Details
                                 </a>
                             </p>
+                            <p class="card-text">
+                                <a class="btn btn-outline-secondary" float-right" asp-controller="Post" asp-action="Edit" asp-route-id="@item.Id" asp-route-category="@item.Category.Category">
+                                    <i class="bi bi-eye-fill"></i> Edit
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </div>

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BulletinBoard.Services
 {
-    public class AnimalService : ICategoryService<AnimalAttributeVM>
+    public class AnimalService : ICategoryService<AnimalAttributeVM, AnimalAttribute>
     {
         private readonly AppDbContext _context;
 
@@ -42,13 +42,64 @@ namespace BulletinBoard.Services
                             Age = item.Age
                         }
                     },
-                    Status = PostStatus.Active
+                    PostStatusId = (int)PostStatuses.Active,
+                    AttributeCategoryId = (int)Categories.Animal
                 };
 
+                user.UserPostList.Add(newItem);
+
+
+
                 await _context.AddAsync(newItem);
-                user.Posts.Add(newItem);
+                user.UserPostList.Add(newItem);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<bool> EditAsync(AnimalAttributeVM model)
+        {
+            var animalPost = await _context.AnimalsAttribute.FirstOrDefaultAsync(x => x.MainPost.MainPost.Id == model.Id);
+
+            if (animalPost != null)
+            {
+                animalPost.Age = model.Age;
+                animalPost.MainPost.MainPost.Titile = model.Post.Titile;
+                animalPost.MainPost.MainPost.Description = model.Post.Description;
+                animalPost.MainPost.MainPost.Price = model.Post.Price;
+
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<List<AnimalAttribute>> GetAllAsync()
+        {
+            var animalPosts = await _context.AnimalsAttribute.Where(x => x.MainPost.MainPost.IsEnable == true).ToListAsync();
+            return animalPosts;
+        }
+
+        public async Task<AnimalAttributeVM> GetVMAsync(int id, string userId)
+        {
+            var animalPost = await _context.AnimalsAttribute.FirstOrDefaultAsync(x => x.MainPost.MainPost.Id == id && x.MainPost.MainPost.UserId == userId);
+
+            if (animalPost != null)
+            {
+                return new AnimalAttributeVM()
+                {
+                    Id = animalPost.Id,
+                    Age = animalPost.Age,
+                    Post = new PostVM()
+                    {
+                        Description = animalPost.MainPost.MainPost.Description,
+                        Price = animalPost.MainPost.MainPost.Price,
+                        Titile = animalPost.MainPost.MainPost.Titile
+                    }
+                };
+            }
+
+            return null;
         }
     }
 }
