@@ -104,11 +104,7 @@ namespace BulletinBoard.Services
                         Titile = animalPost.MainPost.MainPost.Titile,
                         Images = animalPost.MainPost.MainPost.Images,
                     },
-
                 };
-                var imagelist = new List<IFormFile?>(8);
-
-                for (int i = 0; i < 8; i++) imagelist.Add(null);
 
                 return vm;
             }

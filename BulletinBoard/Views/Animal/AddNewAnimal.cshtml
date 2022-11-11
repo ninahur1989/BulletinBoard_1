@@ -1,5 +1,6 @@
 ﻿@using BulletinBoard.Data.ViewModels
 @using BulletinBoard.Data.Enums
+@using BulletinBoard.Data.Static
 @model AnimalAttributeVM
 @{
     ViewData["Title"] = "Create a new Post";
@@ -46,33 +47,21 @@
                             </div>
                         </div>
                     </div>
-
-                    @*<div class="image-preview-container">
-                    <div class="preview">
-                    <img style="width: 300px" id="preview-selected-image0" />
-                    </div>
-                    <label for="file-upload">Upload Image</label>
-                    <input type="file" id="file-upload" accept="image/*" onchange="previewImage(event, 0);" />
-                    </div>
-
-                    <div class="image-preview-container">
-                    <div class="preview">
-                    <img style="width: 300px" id="preview-selected-image1" />
-                    </div>
-                    <label for="file-upload">Upload Image</label>
-                    <input type="file" id="file-upload" accept="image/*" onchange="previewImage(event,1);" />
-                    </div>*@
                     <div>
-                        @for (int i = 0; i <= 7; i++)
+                        @for (int i = 0; i < ImageLimit.ImageLimitPerPost; i++)
                         {
-                            string PATH = "preview" + i;
+                            string path = "preview" + i;
+                            string inputId = "preview" + i + "input";
 
                             <div class="image-preview-container">
                                 <div class="preview">
-                                    <img style="width: 300px" id=@PATH />
+                                    <img style="width: 300px" id="@path" />
                                 </div>
                                 <label for="file-upload">Upload Image</label>
-                                <input asp-for="Post.ImageFile" type="file" id="file-upload" accept="image/*" onchange="previewImage(event , '@i.ToString()');" />
+                                <input asp-for="Post.ImageFile" type="file" id="@inputId" accept="image/*" onchange="previewImage(event , '@i.ToString()');" />
+                                <input type="button"
+                                   value="click here to clear"
+                                   onclick="deleteImage(  '@i.ToString()', '@inputId' )" />
                             </div>
                         }
                         <div class="form-group">
@@ -86,35 +75,29 @@
 </div>
 <script>
     const previewImage = (event, id) => {
-        /**
-         * Get the selected files.
-         */
+        console.log(1);
         const imageFiles = event.target.files;
-        /**
-         * Count the number of files selected.
-         */
+
         const imageFilesLength = imageFiles.length;
-        /**
-         * If at least one image is selected, then proceed to display the preview.
-         */
-        if (imageFilesLength > 0) {
-            /**
-             * Get the image path.
-             */
-            const imageSrc = URL.createObjectURL(imageFiles[0]);
-            /**
-             * Select the image preview element.
-             */
-            const imagePreviewElement = document.querySelector("#preview" + id);
-            /**
-             * Assign the path to the image preview element.
-             */
-            imagePreviewElement.src = imageSrc;
-            /**
-             * Show the element by changing the display value to "block".
-             */
-            imagePreviewElement.style.display = "block";
-        }
+
+        const imageSrc = URL.createObjectURL(imageFiles[0]);
+
+        const imagePreviewElement = document.querySelector("#preview" + id);
+        console.log(imagePreviewElement);
+
+        imagePreviewElement.src = imageSrc;
+
+        imagePreviewElement.style.display = "block";
+    };
+
+    const deleteImage = (id, inputId) => {
+        console.log(4);
+        document.getElementById(inputId).value = '';
+        console.log(5);
+
+        const imagePreviewElement = document.querySelector("#preview" + id);
+        console.log(imagePreviewElement);
+        imagePreviewElement.style.display = "none";
     };
 </script>
 
