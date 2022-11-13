@@ -1,0 +1,52 @@
+﻿@using BulletinBoard.Data.Enums
+@model Post
+
+<div class="col-md-12">
+    <div class="card-footer ">
+
+        <p class="card-text">
+            <a class="btn btn-outline-primary float-right" asp-controller="Post" asp-action="Details" asp-route-id="@Model.Id">
+                <i class="bi bi-eye-fill"></i> Show Details
+            </a>
+        </p>
+        @if (Model.Status.Status == BulletinBoard.Data.Enums.PostStatuses.Active)
+        {
+            <p class="card-text">
+                <a class="btn btn-outline-secondary" float-right" asp-controller="Post" asp-action="Edit" asp-route-id="@Model.Id" asp-route-category="@Model.Category.Category">
+                    <i class="bi bi-eye-fill"></i> Edit
+                </a>
+            </p>
+            <p class="card-text">
+                <a class="btn btn-outline-secondary" float-right" asp-controller="Post" asp-action="Deactivate" asp-route-id="@Model.Id">
+                    <i class="bi bi-eye-fill"></i> Deactivate
+                </a>
+            </p>
+        }
+        else if (Model.Status.Status == BulletinBoard.Data.Enums.PostStatuses.Inactive)
+        {
+            <p class="card-text">
+                <a class="btn btn-outline-secondary" float-right" asp-controller="Post" asp-action="Edit" asp-route-id="@Model.Id" asp-route-category="@Model.Category.Category">
+                    <i class="bi bi-eye-fill"></i> Edit
+                </a>
+            </p>
+            <p class="card-text">
+                <a class="btn btn-outline-secondary" float-right" asp-controller="Post" asp-action="Activate" asp-route-id="@Model.Id">
+                    <i class="bi bi-eye-fill"></i> Activate
+                </a>
+            </p>
+            <p class="card-text">
+                <a class="btn btn-outline-secondary" float-right" asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Id">
+                    <i class="bi bi-eye-fill"></i> Delete
+                </a>
+            </p>
+        }
+        else
+        {
+            <p class="card-text">
+                <a class="btn btn-outline-secondary" float-right" asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Id">
+                    <i class="bi bi-eye-fill"></i> Delete
+                </a>
+            </p>
+        }
+    </div>
+</div>

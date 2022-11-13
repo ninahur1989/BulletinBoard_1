@@ -2,9 +2,10 @@
 
 <ul class="navbar-nav flex-grow-1">
     <li class="nav-item">
-        <partial name="_AccountNavigation.cshtml" />
+        @await Html.PartialAsync("_AccountNavigation.cshtml" )
     </li>
 </ul>
+
 <div class="row">
     @foreach (var item in Model)
     {
@@ -12,7 +13,7 @@
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row g-0">
                     <div class="col-md-6">
-                        <img src="~/uploads/@item.Images[0].Name" width="100%" >
+                        <img src="~/uploads/@item.Images[0].Name" width="100%">
                     </div>
                     <div class="col-md-12">
                         <div class="card-header text-white bg-info">
@@ -42,20 +43,7 @@
                             </p>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <div class="card-footer ">
-                            <p class="card-text">
-                                <a class="btn btn-outline-primary float-right" asp-controller="Post" asp-action="Details" asp-route-id="@item.Id">
-                                    <i class="bi bi-eye-fill"></i> Show Details
-                                </a>
-                            </p>
-                            <p class="card-text">
-                                <a class="btn btn-outline-secondary" float-right" asp-controller="Post" asp-action="Edit" asp-route-id="@item.Id" asp-route-category="@item.Category.Category">
-                                    <i class="bi bi-eye-fill"></i> Edit
-                                </a>
-                            </p>
-                        </div>
-                    </div>
+                    @await Html.PartialAsync("_AccountAction.cshtml" , (Post)item)
                 </div>
             </div>
         </div>

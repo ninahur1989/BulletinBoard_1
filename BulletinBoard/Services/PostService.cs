@@ -8,11 +8,13 @@ namespace BulletinBoard.Services
 {
     public class PostService : IPostService
     {
+        private readonly IFileService _fileService;
         private readonly AppDbContext _context;
 
-        public PostService(AppDbContext context)
+        public PostService(AppDbContext context, IFileService fileService)
         {
             _context = context;
+            _fileService = fileService;
         }
 
         public async Task<Post?> GetPostByIdAsync(int id)
@@ -41,12 +43,21 @@ namespace BulletinBoard.Services
 
             if (post != null)
             {
+                _fileService.Delete(post.Images);
+                await DeletePostImageAsync(post.Images);
                 _context.Remove(post);
                 await _context.SaveChangesAsync();
             }
         }
 
-        public async Task DisablePostAsync(int id, string userId)
+        public async Task DeletePostImageAsync(List<Image> images)
+        {
+            _context.Images.RemoveRange(images);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeactivatePostAsync(int id, string userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
@@ -55,7 +66,21 @@ namespace BulletinBoard.Services
             if (post != null)
             {
                 post.IsEnable = false;
-                post.Status.Id = (int)PostStatuses.Inactive;
+                post.PostStatusId = (int)PostStatuses.Inactive;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task ActivatePostAsync(int id, string userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
+            var post = user.UserPostList.FirstOrDefault(x => x.Id == id);
+
+            if (post != null)
+            {
+                post.IsEnable = true;
+                post.PostStatusId = (int)PostStatuses.Active;
                 await _context.SaveChangesAsync();
             }
         }

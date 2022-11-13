@@ -103,9 +103,18 @@ namespace BulletinBoard.Services
                         Price = animalPost.MainPost.MainPost.Price,
                         Titile = animalPost.MainPost.MainPost.Titile,
                         Images = animalPost.MainPost.MainPost.Images,
+                        ExistedImage = new List<IFormFile?>(),
                     },
                 };
 
+                foreach (var a in vm.Post.Images)
+                {
+                    string path = "./wwwroot/uploads/" + a.Name;
+                    using (var stream = System.IO.File.OpenRead(path))
+                    {
+                        vm.Post.ExistedImage.Add(new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name)));
+                    }
+                }
                 return vm;
             }
 

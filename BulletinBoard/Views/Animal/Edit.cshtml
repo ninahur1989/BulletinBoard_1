@@ -41,35 +41,49 @@
                             </div>
                         </div>
                     </div>
+                    <div>
+                        @for (int i = 0; i < Model.Post.ExistedImage.Count; i++)
+                        {
+                            string PATH = "preview" + i;
+                            string inputId = "preview" + i + "input";
+
+                            <div class="image-preview-container">
+                                <div class="preview">
+                                    @if (Model.Post.ExistedImage[i] != null)
+                                    {
+                                        <div class="col-md-6">
+                                            <span>
+                                                <strong>Previous</strong>
+                                                <img src="~/uploads/@Model.Post.Images[i].Name" width="100%">
+                                                <strong>New</strong>
+                                                <img style="width: 300px" id=@PATH />
+                                            </span>
+                                        </div>
+                                    }
+                                </div>
+                                <input type="button"
+                                   value="click here to clear"
+                                   onclick="deleteImage(  '@i.ToString()', '@inputId' )" />
+                                <input asp-for="Post.ExistedImage" type="file" id="@inputId" accept="image/*" value=@Model.Post.ExistedImage[i] onchange="previewImage(event , '@i.ToString()');" />
+                            </div>
+                        }
+                    </div>
 
                     <div>
-                        @for (int i = 0; i <= ImageLimit.ImageLimitPerPost; i++)
+                        @for (int i = Model.Post.ExistedImage.Count; i < ImageLimit.ImageLimitPerPost; i++)
                         {
+                            string inputId = "preview" + i + "input";
                             string PATH = "preview" + i;
 
                             <div class="image-preview-container">
                                 <div class="preview">
-                                    @if (Model.Post.Images.Count - 1 >= i)
-                                    {
-                                        if (Model.Post.Images[i] != null)
-                                        {
-                                            <div class="col-md-6">
-                                                <span>
-                                                    Previous
-                                                    <img src="~/uploads/@Model.Post.Images[i].Name" width="100%">
-                                                    new
-                                                    <img style="width: 300px" id=@PATH />
-                                                </span>
-                                            </div>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <img style="width: 300px" id=@PATH />
-                                    }
+                                    <img style="width: 300px" id=@PATH />
                                 </div>
                                 <label for="file-upload">Upload Image</label>
-                                <input asp-for="Post.ImageFile" type="file" id="file-upload" accept="image/*" onchange="previewImage(event , '@i.ToString()');" />
+                                <input type="button"
+                                   value="click here to clear"
+                                   onclick="deleteImage(  '@i.ToString()', '@inputId' )" />
+                                <input asp-for="Post.ImageFile" type="file" id="@inputId" accept="image/*" onchange="previewImage(event , '@i.ToString()');" />
                             </div>
                         }
                     </div>
@@ -81,38 +95,29 @@
         </div>
     </div>
 </div>
-</div>
 <script>
     const previewImage = (event, id) => {
-        /**
-         * Get the selected files.
-         */
         const imageFiles = event.target.files;
-        /**
-         * Count the number of files selected.
-         */
+
         const imageFilesLength = imageFiles.length;
-        /**
-         * If at least one image is selected, then proceed to display the preview.
-         */
-        if (imageFilesLength > 0) {
-            /**
-             * Get the image path.
-             */
-            const imageSrc = URL.createObjectURL(imageFiles[0]);
-            /**
-             * Select the image preview element.
-             */
-            const imagePreviewElement = document.querySelector("#preview" + id);
-            /**
-             * Assign the path to the image preview element.
-             */
-            imagePreviewElement.src = imageSrc;
-            /**
-             * Show the element by changing the display value to "block".
-             */
-            imagePreviewElement.style.display = "block";
-        }
+
+        const imageSrc = URL.createObjectURL(imageFiles[0]);
+
+        const imagePreviewElement = document.querySelector("#preview" + id);
+        console.log(imagePreviewElement);
+
+        imagePreviewElement.src = imageSrc;
+
+        imagePreviewElement.style.display = "block";
+    };
+
+    const deleteImage = (id, inputId) => {
+        document.getElementById(inputId).value = '';
+
+        const imagePreviewElement = document.querySelector("#preview" + id);
+        console.log(imagePreviewElement);
+        imagePreviewElement.style.display = "none";
     };
 </script>
+
 

@@ -64,9 +64,16 @@ namespace BulletinBoard.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        public async Task<IActionResult> Disable(int id)
+        public async Task<IActionResult> Deactivate(int id)
         {
-            await _postService.DisablePostAsync(id, User.FindFirstValue(ClaimTypes.NameIdentifier));
+            await _postService.DeactivatePostAsync(id, User.FindFirstValue(ClaimTypes.NameIdentifier));
+           
+            return RedirectToAction("Index", "Account");
+        }
+
+        public async Task<IActionResult> Activate(int id)
+        {
+            await _postService.ActivatePostAsync(id, User.FindFirstValue(ClaimTypes.NameIdentifier));
             return RedirectToAction("Index", "Account");
         }
     }

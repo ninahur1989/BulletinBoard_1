@@ -36,5 +36,13 @@ namespace BulletinBoard.Services
             }
             return images;
         }
+
+        public void Delete(List<Image> images)
+        {
+            foreach (var file in images)
+            {
+                File.Delete(file.Path);
+            }
+        }
     }
 }

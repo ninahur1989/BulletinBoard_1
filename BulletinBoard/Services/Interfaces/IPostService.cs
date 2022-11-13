@@ -8,6 +8,8 @@ namespace BulletinBoard.Services.Interfaces
         public Task<Post?> GetPostByIdAsync(int id);
         public Task<List<Post?>> SearchPostAsync(string? searchTitile, string? searchLocation);
         public Task DeletePostAsync(int id, string userId);
-        public Task DisablePostAsync(int id, string userId);
+        public Task DeactivatePostAsync(int id, string userId);
+        public Task ActivatePostAsync(int id, string userId);
+        public Task DeletePostImageAsync(List<Image> images);
     }
 }

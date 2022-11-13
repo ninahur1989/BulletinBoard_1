@@ -75,7 +75,6 @@
 </div>
 <script>
     const previewImage = (event, id) => {
-        console.log(1);
         const imageFiles = event.target.files;
 
         const imageFilesLength = imageFiles.length;
@@ -91,9 +90,7 @@
     };
 
     const deleteImage = (id, inputId) => {
-        console.log(4);
         document.getElementById(inputId).value = '';
-        console.log(5);
 
         const imagePreviewElement = document.querySelector("#preview" + id);
         console.log(imagePreviewElement);

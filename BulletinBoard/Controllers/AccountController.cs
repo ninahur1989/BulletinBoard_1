@@ -1,4 +1,5 @@
 ﻿using BulletinBoard.Data;
+using BulletinBoard.Data.Enums;
 using BulletinBoard.Data.Static;
 using BulletinBoard.Data.ViewModels;
 using BulletinBoard.Models.UserModels;
@@ -96,9 +97,10 @@ namespace BulletinBoard.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GetPosts()
+        public async Task<IActionResult> GetPosts(PostStatuses? status)
         {
-            var posts = await _accountService.GetMyPostsAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            PostStatuses curentStatus = (status ?? PostStatuses.Active);
+            var posts = await _accountService.GetMyPostsAsync(User.FindFirstValue(ClaimTypes.NameIdentifier) , curentStatus);
             return View(posts);
         }
     }

@@ -19,12 +19,11 @@ namespace BulletinBoard.Data.ViewModels
         [MinLength(1), MaxLength(9000)]
         public string Description { get; set; }
 
-
-        [MinLength(1), MaxLength(7)]
-        [Required(ErrorMessage = "Image is required")]
-        public List<IFormFile?> ImageFile { get; set; }
+        public List<IFormFile?>? ImageFile { get; set; }
 
         public List<Image?>? Images { get; set; }
+
+        public List<IFormFile?>? ExistedImage { get; set; }
 
     }
 }

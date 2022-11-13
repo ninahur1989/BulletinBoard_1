@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Drawing;
+using BulletinBoard.Data.Static;
 
 namespace BulletinBoard.Controllers
 {
@@ -12,7 +13,7 @@ namespace BulletinBoard.Controllers
     {
         private readonly ICategoryService<AnimalAttributeVM, AnimalAttribute> _service;
 
-        public AnimalController(ICategoryService<AnimalAttributeVM, AnimalAttribute> service )
+        public AnimalController(ICategoryService<AnimalAttributeVM, AnimalAttribute> service)
         {
             _service = service;
         }
@@ -27,7 +28,7 @@ namespace BulletinBoard.Controllers
         {
             var posts = await _service.GetAllAsync();
 
-            if(posts == null)
+            if (posts == null)
                 return NotFound();
             return View(posts);
         }
@@ -35,19 +36,25 @@ namespace BulletinBoard.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNewAnimal(AnimalAttributeVM model)
         {
+            if (model.Post.ImageFile.Count == 0 || model.Post.ImageFile.Count > ImageLimit.ImageLimitPerPost)
+            {
+                return View(model);
+            }
+
             if (ModelState.IsValid)
             {
                 await _service.AddAsync(model, User.FindFirstValue(ClaimTypes.NameIdentifier));
                 return RedirectToAction("Index", "Home");
             }
-            return View( model);
+            return View(model);
         }
+
 
         public async Task<IActionResult> Edit(int id)
         {
-            var animalAttributeVM = await _service.GetVMAsync(id , User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var animalAttributeVM = await _service.GetVMAsync(id, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            if (animalAttributeVM == null) 
+            if (animalAttributeVM == null)
                 return NotFound();
 
             return View(animalAttributeVM);
@@ -61,7 +68,7 @@ namespace BulletinBoard.Controllers
             {
                 bool result = await _service.EditAsync(model);
 
-                if(result)
+                if (result)
                     return RedirectToAction("Index", "Home");
 
                 return View(model);

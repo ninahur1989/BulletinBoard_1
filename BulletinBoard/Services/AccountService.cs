@@ -16,13 +16,13 @@ namespace BulletinBoard.Services
             _context = context;
         }
 
-        public async Task<List<Post>> GetMyPostsAsync(string userId)
+        public async Task<List<Post>> GetMyPostsAsync(string userId, PostStatuses status)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
             if (user != null)
             {
-                return user.UserPostList.ToList();
+                return  user.UserPostList.Where(x => x.Status.Status == status).ToList();
             }
 
             return new List<Post>();
