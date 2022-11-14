@@ -49,6 +49,7 @@ namespace BulletinBoard.Services
                         }
                     },
                     PostStatusId = (int)PostStatuses.Active,
+                    CountInFavorites = default,
                     AttributeCategoryId = (int)Categories.Animal
                 };
 

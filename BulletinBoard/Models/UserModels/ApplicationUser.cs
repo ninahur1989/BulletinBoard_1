@@ -13,5 +13,7 @@ namespace BulletinBoard.Models.UserModels
         public string Location { get; set; }
 
         public virtual List<Post> UserPostList { get; set; }
+
+        public virtual List<Favorite> FavoritePostList { get; set; }
     }
 }

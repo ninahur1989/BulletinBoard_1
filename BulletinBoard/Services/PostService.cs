@@ -1,6 +1,7 @@
 ﻿using BulletinBoard.Data;
 using BulletinBoard.Data.Enums;
 using BulletinBoard.Models;
+using BulletinBoard.Models.UserModels;
 using BulletinBoard.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -83,6 +84,44 @@ namespace BulletinBoard.Services
                 post.PostStatusId = (int)PostStatuses.Active;
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<bool> AddFavoriteAsync(int id, string userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
+            if (user != null)
+            {
+                var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
+
+                if (post != null)
+                {
+                    var favoriteDB = user.FavoritePostList.FirstOrDefault(x => x.ApplicationUserId == userId && x.PostId == id);
+
+                    if (favoriteDB != null)
+                    {
+                        _context.Remove(favoriteDB);
+                        post.CountInFavorites--;
+                        return true;
+                    }
+
+                    var favorite = new Favorite()
+                    {
+                        PostId = id,
+                        ApplicationUserId = userId,
+                    };
+
+                    await _context.AddAsync(favorite);
+                    post.CountInFavorites++;
+                    await _context.SaveChangesAsync();
+
+                    return false;
+                }
+
+                throw new InvalidDataException();
+            }
+
+            throw new InvalidDataException();
         }
     }
 }

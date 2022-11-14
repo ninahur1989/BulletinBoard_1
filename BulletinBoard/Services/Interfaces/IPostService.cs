@@ -11,5 +11,6 @@ namespace BulletinBoard.Services.Interfaces
         public Task DeactivatePostAsync(int id, string userId);
         public Task ActivatePostAsync(int id, string userId);
         public Task DeletePostImageAsync(List<Image> images);
+        public Task<bool> AddFavoriteAsync(int id, string userId);
     }
 }

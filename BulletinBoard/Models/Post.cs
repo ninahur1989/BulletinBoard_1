@@ -15,6 +15,7 @@ namespace BulletinBoard.Models
         public float Price { get; set; }
         public bool IsEnable { get; set; }
         public string Location { get; set; }
+        public int CountInFavorites { get; set; }
 
         public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]

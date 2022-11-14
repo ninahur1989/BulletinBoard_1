@@ -76,6 +76,12 @@ namespace BulletinBoard.Controllers
             await _postService.ActivatePostAsync(id, User.FindFirstValue(ClaimTypes.NameIdentifier));
             return RedirectToAction("Index", "Account");
         }
+
+        public async Task<bool> Favorite(int id)
+        {
+            var result = await _postService.AddFavoriteAsync(id, User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return result;
+        }
     }
 }
 

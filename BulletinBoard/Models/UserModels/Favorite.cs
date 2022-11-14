@@ -9,8 +9,8 @@ namespace BulletinBoard.Models.UserModels
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("UserId")]
-        public string UserId { get; set; }
+        [ForeignKey("ApplicationUserId")]
+        public string ApplicationUserId { get; set; }
 
         [ForeignKey("PostId")]
         public int PostId { get; set; }
