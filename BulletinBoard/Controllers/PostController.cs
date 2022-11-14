@@ -77,9 +77,17 @@ namespace BulletinBoard.Controllers
             return RedirectToAction("Index", "Account");
         }
 
+        [Authorize]
         public async Task<bool> Favorite(int id)
         {
             var result = await _postService.AddFavoriteAsync(id, User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return result;
+        }
+
+        [Authorize]
+        public async Task<bool> IsFavorite(int id)
+        {
+            var result = await _postService.IsFavoriteAsync(id, User.FindFirstValue(ClaimTypes.NameIdentifier));
             return result;
         }
     }

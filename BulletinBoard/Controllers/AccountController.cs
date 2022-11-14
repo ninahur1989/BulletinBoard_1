@@ -100,7 +100,13 @@ namespace BulletinBoard.Controllers
         public async Task<IActionResult> GetPosts(PostStatuses? status)
         {
             PostStatuses curentStatus = (status ?? PostStatuses.Active);
-            var posts = await _accountService.GetMyPostsAsync(User.FindFirstValue(ClaimTypes.NameIdentifier) , curentStatus);
+            var posts = await _accountService.GetMyPostsAsync(User.FindFirstValue(ClaimTypes.NameIdentifier), curentStatus);
+            return View(posts);
+        }
+
+        public async Task<IActionResult> FavoritesPost()
+        {
+            var posts = await _accountService.GetFavoritesAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             return View(posts);
         }
     }

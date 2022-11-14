@@ -1,11 +1,5 @@
 ﻿@model List<Post>
 
-<ul class="navbar-nav flex-grow-1">
-    <li class="nav-item">
-        @await Html.PartialAsync("_AccountNavigation.cshtml" )
-    </li>
-</ul>
-
 <div class="row">
     @foreach (var item in Model)
     {
@@ -36,14 +30,13 @@
                                     @item.CreatedDate -
                                 </h5>
                             </p>
-                            <p class="card-text">
-                                <h5 class="card-title">
-                                    @item.ExpiredDate
-                                </h5>
-                            </p>
                         </div>
+                        <p class="card-text">
+                            <a class="btn btn-outline-primary float-right" asp-controller="Post" asp-action="Details" asp-route-id="@item.Id">
+                                <i class="bi bi-eye-fill"></i> Show Details
+                            </a>
+                        </p>
                     </div>
-                      @await Html.PartialAsync("_AccountAction.cshtml" , (Post)item)
                 </div>
             </div>
         </div>

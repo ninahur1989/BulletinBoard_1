@@ -96,12 +96,14 @@ namespace BulletinBoard.Services
 
                 if (post != null)
                 {
-                    var favoriteDB = user.FavoritePostList.FirstOrDefault(x => x.ApplicationUserId == userId && x.PostId == id);
+                    var isExisted = await IsFavoriteAsync(id, userId);
 
-                    if (favoriteDB != null)
+                    if (isExisted)
                     {
+                        var favoriteDB = user.FavoritePostList.First(x => x.ApplicationUserId == userId && x.PostId == id);
                         _context.Remove(favoriteDB);
                         post.CountInFavorites--;
+                        await _context.SaveChangesAsync();
                         return true;
                     }
 
@@ -122,6 +124,16 @@ namespace BulletinBoard.Services
             }
 
             throw new InvalidDataException();
+        }
+
+        public async Task<bool> IsFavoriteAsync(int id, string userId)
+        {
+            var isExisted = await _context.Favorites.FirstOrDefaultAsync(x => x.ApplicationUserId == userId && x.PostId == id);
+
+            if (isExisted == null)
+                return false;
+
+            return true;
         }
     }
 }

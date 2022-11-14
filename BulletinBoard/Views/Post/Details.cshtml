@@ -1,6 +1,6 @@
 ﻿@using System.Security.Claims
 @model Post
-<body onload="favorite('1')">
+<body onload="isFavorite('@Model.Id.ToString()')">
     <div class="row">
         <div class="col-md-8 offset-2">
             <div class="card mb-12">
@@ -26,7 +26,7 @@
                     </div>
                     @if (Model.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
                     {
-                        <button id="follow-button" onclick="favorite('1')">11</button>
+                        <button id="follow-button" onclick="favorite('@Model.Id.ToString()')"></button>
                     }
                 </div>
             </div>
@@ -41,6 +41,21 @@
             data: { id },
             success: function(json) {
                 if (json == true) {
+                    $('#follow-button').html('Add to Favorite')
+                }
+                else {
+                    $('#follow-button').html('Remove from Favorite')
+                }
+            }
+        })
+    }
+    function isFavorite(id) {
+        $.ajax({
+            type: "POST",
+            url: "/Post/IsFavorite",
+            data: { id },
+            success: function(json) {
+                if (json == false) {
                     $('#follow-button').html('Add to Favorite')
                 }
                 else {
