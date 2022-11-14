@@ -4,39 +4,6 @@
 <div class="row">
     @foreach (var item in Model)
     {
-        <a asp-controller="Post" asp-action="Details" asp-route-id="@item.MainPost.MainPost.Id">
-        <div class="css-1pze2fb">
-            <div class="card mb-3" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-md-12">
-                        <div class="col-md-6">
-                        <img src="~/uploads/@item.MainPost.MainPost.Images[0].Name" width="100%" >
-                    </div>
-                        <div class="card-header text-white bg-info">
-                            <p class="card-text">
-                                <h5 class="card-title">
-                                    @item.MainPost.MainPost.Titile
-                                </h5>
-                            </p>
-                        </div>
-                        <div>
-                            <p class="card-text">
-                                <h5 class="card-title">
-                                    @item.MainPost.MainPost.Price
-                                </h5>
-                            </p>
-                        </div>
-                        <div>
-                            <p class="card-text">
-                                <h5 class="card-title">
-                                    @item.MainPost.MainPost.CreatedDate
-                                </h5>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </a>
+          @await Html.PartialAsync("../Post/_PostCard.cshtml" , (Post)item.MainPost.MainPost)
     }
 </div>

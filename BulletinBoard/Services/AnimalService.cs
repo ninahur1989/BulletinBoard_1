@@ -57,7 +57,6 @@ namespace BulletinBoard.Services
 
                 user.UserPostList.Add(newItem);
 
-
                 await _context.AddAsync(newItem);
                 user.UserPostList.Add(newItem);
                 await _context.SaveChangesAsync();
@@ -74,6 +73,40 @@ namespace BulletinBoard.Services
                 animalPost.MainPost.MainPost.Titile = model.Post.Titile;
                 animalPost.MainPost.MainPost.Description = model.Post.Description;
                 animalPost.MainPost.MainPost.Price = model.Post.Price;
+
+
+                var existedImages = _fileService.ImageToFormFile(animalPost.MainPost.MainPost);
+
+                var addedToExisted = new List<IFormFile>(ImageLimit.ImageLimitPerPost);
+
+                var res = new List<IFormFile>(ImageLimit.ImageLimitPerPost);
+                for (int i = 0; i < model.Post.ExistedImage.Count; i++)
+                {
+                    for (int j = 0; j < existedImages.Count; j++)
+                    {
+                        if (model.Post.ExistedImage[i].FileName == "preview" + j + "input")
+                        {
+                            res.Add(existedImages[j]);
+                            continue;
+                        }
+                        else if (j == existedImages.Count - 1)
+                        {
+                            addedToExisted.Add(model.Post.ExistedImage[i]);
+                        }
+                    }
+                }
+
+                foreach (IFormFile file in res)
+                {
+                    existedImages.RemoveAll(x => !x.Equals(file));
+                    //_fileService.Delete()
+                }
+
+                existedImages.AddRange(addedToExisted);
+                existedImages.AddRange(model.Post.ImageFile);
+
+                animalPost.MainPost.MainPost.Images = await _fileService.UploadAsync(addedToExisted, animalPost.MainPost.MainPost.UserId);
+                animalPost.MainPost.MainPost.Images = await _fileService.UploadAsync(model.Post.ImageFile, animalPost.MainPost.MainPost.UserId);
 
                 await _context.SaveChangesAsync();
                 return true;
@@ -103,19 +136,10 @@ namespace BulletinBoard.Services
                         Description = animalPost.MainPost.MainPost.Description,
                         Price = animalPost.MainPost.MainPost.Price,
                         Titile = animalPost.MainPost.MainPost.Titile,
-                        Images = animalPost.MainPost.MainPost.Images,
-                        ExistedImage = new List<IFormFile?>(),
                     },
                 };
 
-                foreach (var a in vm.Post.Images)
-                {
-                    string path = "./wwwroot/uploads/" + a.Name;
-                    using (var stream = System.IO.File.OpenRead(path))
-                    {
-                        vm.Post.ExistedImage.Add(new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name)));
-                    }
-                }
+                vm.Post.ExistedImage = _fileService.ImageToFormFile(animalPost.MainPost.MainPost);
                 return vm;
             }
 

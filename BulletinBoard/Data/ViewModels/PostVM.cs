@@ -19,11 +19,9 @@ namespace BulletinBoard.Data.ViewModels
         [MinLength(1), MaxLength(9000)]
         public string Description { get; set; }
 
-        public List<IFormFile?>? ImageFile { get; set; }
+        public List<IFormFile>? ImageFile { get; set; }
 
-        public List<Image?>? Images { get; set; }
-
-        public List<IFormFile?>? ExistedImage { get; set; }
+        public List<IFormFile>? ExistedImage { get; set; }
 
     }
 }

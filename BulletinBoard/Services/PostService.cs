@@ -135,5 +135,15 @@ namespace BulletinBoard.Services
 
             return true;
         }
+
+        public async Task<List<Post>> GetUserPostsAsync(int id)
+        {
+            var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (post != null)
+                return post.User.UserPostList.Where(x=>x.IsEnable).ToList();
+
+            return new List<Post>();
+        }
     }
 }

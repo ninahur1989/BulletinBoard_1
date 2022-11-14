@@ -90,6 +90,16 @@ namespace BulletinBoard.Controllers
             var result = await _postService.IsFavoriteAsync(id, User.FindFirstValue(ClaimTypes.NameIdentifier));
             return result;
         }
+
+        public async Task<IActionResult> UserPosts(int id)
+        {
+            var posts = await _postService.GetUserPostsAsync(id);
+
+            if (posts == null  && posts.Count == 0)
+                return NotFound();
+
+            return View(posts);
+        }
     }
 }
 

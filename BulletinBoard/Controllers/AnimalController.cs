@@ -18,12 +18,6 @@ namespace BulletinBoard.Controllers
             _service = service;
         }
 
-        [Authorize]
-        public IActionResult AddNewAnimal()
-        {
-            return View(new AnimalAttributeVM());
-        }
-
         public async Task<IActionResult> Index()
         {
             var posts = await _service.GetAllAsync();
@@ -31,6 +25,12 @@ namespace BulletinBoard.Controllers
             if (posts == null)
                 return NotFound();
             return View(posts);
+        }
+
+        [Authorize]
+        public IActionResult AddNewAnimal()
+        {
+            return View(new AnimalAttributeVM());
         }
 
         [HttpPost]
@@ -63,6 +63,8 @@ namespace BulletinBoard.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(AnimalAttributeVM model)
         {
+            if (model.Post.ExistedImage == null && model.Post.ImageFile == null)
+                return NoContent();
 
             if (ModelState.IsValid)
             {

@@ -27,7 +27,7 @@ namespace BulletinBoard.Services
                         images.Add(new Image()
                         {
                             Name = newName,
-                            Path = filePath,
+                            FolderName = "uploads",
                         });
 
                         await file.CopyToAsync(fileStream);
@@ -41,8 +41,19 @@ namespace BulletinBoard.Services
         {
             foreach (var file in images)
             {
-                File.Delete(file.Path);
+                File.Delete(@"C:\Users\Admin\Desktop\ds\BulletinBoard\BulletinBoard\wwwroot\uploads\" + file.Name);
             }
+        }
+
+        public List<IFormFile> ImageToFormFile(Post post)
+        {
+            var img = new List<IFormFile>();
+            foreach (var a in post.Images)
+            {
+                string path = "/wwwroot/uploads/" + a.Name;
+                img.Add(new FormFile(null, 0, 0, a.Name, a.Name));
+            }
+            return img;
         }
     }
 }

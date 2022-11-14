@@ -6,6 +6,9 @@
             <div class="card mb-12">
                 <div class="row g-0">
                     <div class="col-md-12">
+                        <a class="bi bi-person-circle" asp-action="UserPosts" asp-route-id="@Model.Id"> 
+                            @Model.User.FullName
+                        </a>
                         <div class="col-md-6">
                             <img src="~/uploads/@Model.Images[0].Name" width="100%">
                         </div>

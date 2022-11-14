@@ -41,34 +41,32 @@
                             </div>
                         </div>
                     </div>
+                    <span>
+                        <strong>Alreaydy existed photos</strong>
+                    </span>
                     <div>
                         @for (int i = 0; i < Model.Post.ExistedImage.Count; i++)
                         {
-                            string PATH = "preview" + i;
+                            <span>previous photo</span>
+                            <img src="~/uploads/@Model.Post.ExistedImage[i].FileName" width="100%" >
                             string inputId = "preview" + i + "input";
-
+                            string PATH = "preview" + i;
                             <div class="image-preview-container">
+                                 <span>new photo</span>
                                 <div class="preview">
-                                    @if (Model.Post.ExistedImage[i] != null)
-                                    {
-                                        <div class="col-md-6">
-                                            <span>
-                                                <strong>Previous</strong>
-                                                <img src="~/uploads/@Model.Post.Images[i].Name" width="100%">
-                                                <strong>New</strong>
-                                                <img style="width: 300px" id=@PATH />
-                                            </span>
-                                        </div>
-                                    }
+                                    <img style="width: 300px" id=@PATH />
                                 </div>
+                                <label for="file-upload">Upload Image</label>
                                 <input type="button"
                                    value="click here to clear"
                                    onclick="deleteImage(  '@i.ToString()', '@inputId' )" />
-                                <input asp-for="Post.ExistedImage" type="file" id="@inputId" accept="image/*" value=@Model.Post.ExistedImage[i] onchange="previewImage(event , '@i.ToString()');" />
+                                <input class="previousinput" asp-for="Post.ExistedImage" type="file" id="@inputId" accept="image/*" onchange="previewImage(event , '@i.ToString()');" />
                             </div>
                         }
+                        <body onload="previousFile()">
+                        </body>
                     </div>
-
+                      <span> <strong> New photos</strong></span>
                     <div>
                         @for (int i = Model.Post.ExistedImage.Count; i < ImageLimit.ImageLimitPerPost; i++)
                         {
@@ -83,7 +81,7 @@
                                 <input type="button"
                                    value="click here to clear"
                                    onclick="deleteImage(  '@i.ToString()', '@inputId' )" />
-                                <input asp-for="Post.ImageFile" type="file" id="@inputId" accept="image/*" onchange="previewImage(event , '@i.ToString()');" />
+                                <input class=asp-for ="Post.ExistedImage" type="file" id="@inputId" accept="image/*" onchange="previewImage(event , '@i.ToString()');" />
                             </div>
                         }
                     </div>
@@ -96,6 +94,27 @@
     </div>
 </div>
 <script>
+    const previousFile = () => {
+        const inputs = document.querySelectorAll('.previousinput')
+        inputs.forEach(el => {
+            const myFile = new File(['Hello World!'], el.id, {
+                type: 'text/plain',
+                lastModified: new Date(),
+            });
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(myFile);
+            el.files = dataTransfer.files;
+        })
+    }
+
+    const deleteImage = (id, inputId) => {
+        document.getElementById(inputId).value = '';
+
+        const imagePreviewElement = document.querySelector("#preview" + id);
+        console.log(imagePreviewElement);
+        imagePreviewElement.style.display = "none";
+    };
+
     const previewImage = (event, id) => {
         const imageFiles = event.target.files;
 
@@ -109,14 +128,6 @@
         imagePreviewElement.src = imageSrc;
 
         imagePreviewElement.style.display = "block";
-    };
-
-    const deleteImage = (id, inputId) => {
-        document.getElementById(inputId).value = '';
-
-        const imagePreviewElement = document.querySelector("#preview" + id);
-        console.log(imagePreviewElement);
-        imagePreviewElement.style.display = "none";
     };
 </script>
 
