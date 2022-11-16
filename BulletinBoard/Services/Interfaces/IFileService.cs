@@ -6,6 +6,5 @@ namespace BulletinBoard.Services.Interfaces
     {
         public Task<List<Image>> UploadAsync(IList<IFormFile> files, string userId);
         public void Delete(List<Image> images);
-        public List<IFormFile> ImageToFormFile(Post post);
     }
 }

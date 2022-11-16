@@ -5,6 +5,7 @@ namespace BulletinBoard.Services
 {
     public class FileService : IFileService
     {
+        const string ImageFolderPath = @"C:\Users\Admin\Desktop\ds\BulletinBoard\BulletinBoard\wwwroot\";
         private readonly IWebHostEnvironment _hostingEnvironment;
 
         public FileService(IWebHostEnvironment hostingEnvironment)
@@ -27,13 +28,14 @@ namespace BulletinBoard.Services
                         images.Add(new Image()
                         {
                             Name = newName,
-                            FolderName = "uploads",
+                            FolderName = @"uploads\",
                         });
 
                         await file.CopyToAsync(fileStream);
                     }
                 }
             }
+
             return images;
         }
 
@@ -41,19 +43,10 @@ namespace BulletinBoard.Services
         {
             foreach (var file in images)
             {
-                File.Delete(@"C:\Users\Admin\Desktop\ds\BulletinBoard\BulletinBoard\wwwroot\uploads\" + file.Name);
+                var a = ImageFolderPath + file.FolderName + file.Name;
+                File.Delete(ImageFolderPath + file.FolderName + file.Name);
             }
         }
 
-        public List<IFormFile> ImageToFormFile(Post post)
-        {
-            var img = new List<IFormFile>();
-            foreach (var a in post.Images)
-            {
-                string path = "/wwwroot/uploads/" + a.Name;
-                img.Add(new FormFile(null, 0, 0, a.Name, a.Name));
-            }
-            return img;
-        }
     }
 }

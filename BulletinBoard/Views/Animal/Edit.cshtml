@@ -81,7 +81,7 @@
                                 <input type="button"
                                    value="click here to clear"
                                    onclick="deleteImage(  '@i.ToString()', '@inputId' )" />
-                                <input class=asp-for ="Post.ExistedImage" type="file" id="@inputId" accept="image/*" onchange="previewImage(event , '@i.ToString()');" />
+                                <input asp-for ="Post.ImageFile" type="file" id="@inputId" accept="image/*" onchange="previewImage(event , '@i.ToString()');" />
                             </div>
                         }
                     </div>

@@ -1,4 +1,5 @@
 ﻿using BulletinBoard.Data;
+using BulletinBoard.Data.Helpers;
 using BulletinBoard.Data.ViewModels;
 using BulletinBoard.Models.AttributeModels;
 using BulletinBoard.Models.UserModels;
@@ -27,6 +28,7 @@ namespace BulletinBoard
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<IImageFormHelper, ImageFormHelper>();
             services.AddScoped<ICategoryService<CarAttributeVM, CarAttribute>, CarService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IPostService, PostService>();

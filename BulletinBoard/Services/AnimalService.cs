@@ -1,5 +1,6 @@
 ﻿using BulletinBoard.Data;
 using BulletinBoard.Data.Enums;
+using BulletinBoard.Data.Helpers;
 using BulletinBoard.Data.Static;
 using BulletinBoard.Data.ViewModels;
 using BulletinBoard.Models;
@@ -16,12 +17,14 @@ namespace BulletinBoard.Services
     {
         private readonly IFileService _fileService;
         private readonly AppDbContext _context;
+        private readonly IImageFormHelper _imageFormHelper;
 
 
-        public AnimalService(AppDbContext context, IFileService fileService)
+        public AnimalService(AppDbContext context, IFileService fileService, IImageFormHelper imageFormHelper)
         {
             _context = context;
             _fileService = fileService;
+            _imageFormHelper = imageFormHelper;
         }
 
         public async Task AddAsync(AnimalAttributeVM item, string userId)
@@ -74,41 +77,7 @@ namespace BulletinBoard.Services
                 animalPost.MainPost.MainPost.Description = model.Post.Description;
                 animalPost.MainPost.MainPost.Price = model.Post.Price;
 
-
-                var existedImages = _fileService.ImageToFormFile(animalPost.MainPost.MainPost);
-
-                var addedToExisted = new List<IFormFile>(ImageLimit.ImageLimitPerPost);
-
-                var res = new List<IFormFile>(ImageLimit.ImageLimitPerPost);
-                for (int i = 0; i < model.Post.ExistedImage.Count; i++)
-                {
-                    for (int j = 0; j < existedImages.Count; j++)
-                    {
-                        if (model.Post.ExistedImage[i].FileName == "preview" + j + "input")
-                        {
-                            res.Add(existedImages[j]);
-                            continue;
-                        }
-                        else if (j == existedImages.Count - 1)
-                        {
-                            addedToExisted.Add(model.Post.ExistedImage[i]);
-                        }
-                    }
-                }
-
-                foreach (IFormFile file in res)
-                {
-                    existedImages.RemoveAll(x => !x.Equals(file));
-                    //_fileService.Delete()
-                }
-
-                existedImages.AddRange(addedToExisted);
-                existedImages.AddRange(model.Post.ImageFile);
-
-                animalPost.MainPost.MainPost.Images = await _fileService.UploadAsync(addedToExisted, animalPost.MainPost.MainPost.UserId);
-                animalPost.MainPost.MainPost.Images = await _fileService.UploadAsync(model.Post.ImageFile, animalPost.MainPost.MainPost.UserId);
-
-                await _context.SaveChangesAsync();
+                await _imageFormHelper.CheckExistedImagesAsync(animalPost.MainPost.MainPost, model, _context, _fileService);
                 return true;
             }
 
@@ -139,11 +108,11 @@ namespace BulletinBoard.Services
                     },
                 };
 
-                vm.Post.ExistedImage = _fileService.ImageToFormFile(animalPost.MainPost.MainPost);
+                vm.Post.ExistedImage = _imageFormHelper.ImageToFormFile(animalPost.MainPost.MainPost);
                 return vm;
             }
 
-            return null;
+            return new AnimalAttributeVM();
         }
     }
 }
