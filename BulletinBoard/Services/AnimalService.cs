@@ -19,7 +19,6 @@ namespace BulletinBoard.Services
         private readonly AppDbContext _context;
         private readonly IImageFormHelper _imageFormHelper;
 
-
         public AnimalService(AppDbContext context, IFileService fileService, IImageFormHelper imageFormHelper)
         {
             _context = context;
@@ -77,7 +76,7 @@ namespace BulletinBoard.Services
                 animalPost.MainPost.MainPost.Description = model.Post.Description;
                 animalPost.MainPost.MainPost.Price = model.Post.Price;
 
-                await _imageFormHelper.CheckExistedImagesAsync(animalPost.MainPost.MainPost, model, _context, _fileService);
+                await _imageFormHelper.CheckExistedImagesAsync(animalPost.MainPost.MainPost, model.Post, _context, _fileService);
                 return true;
             }
 

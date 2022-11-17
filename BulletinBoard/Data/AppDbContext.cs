@@ -3,6 +3,7 @@ using BulletinBoard.Models.AttributeModels;
 using BulletinBoard.Models.UserModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace BulletinBoard.Data
 {

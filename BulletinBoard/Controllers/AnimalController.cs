@@ -28,18 +28,16 @@ namespace BulletinBoard.Controllers
         }
 
         [Authorize]
-        public IActionResult AddNewAnimal()
+        public IActionResult Create()
         {
             return View(new AnimalAttributeVM());
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewAnimal(AnimalAttributeVM model)
+        public async Task<IActionResult> Create(AnimalAttributeVM model)
         {
             if (model.Post.ImageFile.Count == 0 || model.Post.ImageFile.Count > ImageLimit.ImageLimitPerPost)
-            {
                 return View(model);
-            }
 
             if (ModelState.IsValid)
             {
@@ -48,7 +46,6 @@ namespace BulletinBoard.Controllers
             }
             return View(model);
         }
-
 
         public async Task<IActionResult> Edit(int id)
         {

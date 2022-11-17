@@ -1,4 +1,5 @@
-﻿using BulletinBoard.Data.ViewModels;
+﻿using BulletinBoard.Data.Static;
+using BulletinBoard.Data.ViewModels;
 using BulletinBoard.Models.AttributeModels;
 using BulletinBoard.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -16,12 +17,6 @@ namespace BulletinBoard.Controllers
             _service = service;
         }
 
-        [Authorize]
-        public IActionResult AddNewCar()
-        {
-            return View(new CarAttributeVM());
-        }
-
         public async Task<IActionResult> Index()
         {
             var posts = await _service.GetAllAsync();
@@ -31,9 +26,18 @@ namespace BulletinBoard.Controllers
             return View(posts);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddNewCar(CarAttributeVM model)
+        [Authorize]
+        public IActionResult Create()
         {
+            return View(new CarAttributeVM());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CarAttributeVM model)
+        {
+            if (model.Post.ImageFile.Count == 0 || model.Post.ImageFile.Count > ImageLimit.ImageLimitPerPost)
+                return View(model);
+
             if (ModelState.IsValid)
             {
                 await _service.AddAsync(model, User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -55,13 +59,15 @@ namespace BulletinBoard.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(CarAttributeVM model)
         {
+            if (model.Post.ExistedImage == null && model.Post.ImageFile == null)
+                return NoContent();
+
             if (ModelState.IsValid)
             {
                 bool result = await _service.EditAsync(model);
 
                 if (result)
                     return RedirectToAction("Index", "Home");
-
 
                 return View(model);
             }

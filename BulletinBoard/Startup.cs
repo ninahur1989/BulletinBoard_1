@@ -4,7 +4,10 @@ using BulletinBoard.Data.ViewModels;
 using BulletinBoard.Models.AttributeModels;
 using BulletinBoard.Models.UserModels;
 using BulletinBoard.Services;
+using BulletinBoard.Services.Hangfire;
 using BulletinBoard.Services.Interfaces;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +28,26 @@ namespace BulletinBoard
             services.AddDbContext<AppDbContext>(
                  b => b.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
 
+            //services.AddHangfire(
+            //    x => x.UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnectionString")));
+
+
+
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnectionString"), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true
+                }));
+
+
+            services.AddHangfireServer();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IFileService, FileService>();
@@ -41,7 +64,6 @@ namespace BulletinBoard
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             });
-
 
             services.AddControllersWithViews();
         }
@@ -63,11 +85,10 @@ namespace BulletinBoard
             app.UseRouting();
             app.UseSession();
 
-
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseAuthorization();
+            app.UseHangfireDashboard("/dashboard");
 
             app.UseEndpoints(endpoints =>
             {
@@ -78,6 +99,8 @@ namespace BulletinBoard
 
             AppDbInitializer.Seed(app);
             AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
+
+            RecurringJob.AddOrUpdate<PostHangfireService>(emailJob => emailJob.CheckPost(), "*/10 * * * * *");
         }
     }
 }

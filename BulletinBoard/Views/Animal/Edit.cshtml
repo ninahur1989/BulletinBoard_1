@@ -111,7 +111,6 @@
         document.getElementById(inputId).value = '';
 
         const imagePreviewElement = document.querySelector("#preview" + id);
-        console.log(imagePreviewElement);
         imagePreviewElement.style.display = "none";
     };
 
@@ -123,7 +122,6 @@
         const imageSrc = URL.createObjectURL(imageFiles[0]);
 
         const imagePreviewElement = document.querySelector("#preview" + id);
-        console.log(imagePreviewElement);
 
         imagePreviewElement.src = imageSrc;
 

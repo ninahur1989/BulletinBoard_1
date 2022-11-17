@@ -35,11 +35,10 @@ namespace BulletinBoard.Data.Helpers
             return result;
         }
 
-        public async Task CheckExistedImagesAsync(Post post, AnimalAttributeVM model, AppDbContext _context, IFileService _fileService)
+        public async Task CheckExistedImagesAsync(Post post, PostVM model, AppDbContext _context, IFileService _fileService)
         {
             try
             {
-
                 var fileExistedDBImages = ImageToFormFile(post);
 
                 var addedToExisted = new List<IFormFile>(ImageLimit.ImageLimitPerPost);
@@ -48,20 +47,20 @@ namespace BulletinBoard.Data.Helpers
 
                 var viewExistedImage = new List<IFormFile>(ImageLimit.ImageLimitPerPost);
 
-                if (model.Post.ExistedImage != null)
+                if (model.ExistedImage != null)
                 {
-                    for (int i = 0; i < model.Post.ExistedImage.Count; i++)
+                    for (int i = 0; i < model.ExistedImage.Count; i++)
                     {
                         for (int j = 0; j < fileExistedDBImages.Count; j++)
                         {
-                            if (model.Post.ExistedImage[i].FileName == "preview" + j + "input")
+                            if (model.ExistedImage[i].FileName == "preview" + j + "input")
                             {
                                 viewExistedImage.Add(fileExistedDBImages[j]);
                                 continue;
                             }
                             else if (j == fileExistedDBImages.Count - 1)
                             {
-                                addedToExisted.Add(model.Post.ExistedImage[i]);
+                                addedToExisted.Add(model.ExistedImage[i]);
                             }
                         }
                     }
@@ -85,8 +84,8 @@ namespace BulletinBoard.Data.Helpers
                 if (addedToExisted != null)
                     newListFiles.AddRange(addedToExisted);
 
-                if (model.Post.ImageFile != null)
-                    newListFiles.AddRange(model.Post.ImageFile);
+                if (model.ImageFile != null)
+                    newListFiles.AddRange(model.ImageFile);
 
                 if (newListFiles.Count > 0)
                 {

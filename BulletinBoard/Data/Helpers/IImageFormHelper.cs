@@ -8,6 +8,6 @@ namespace BulletinBoard.Data.Helpers
     {
         public List<IFormFile> ImageToFormFile(Post post);
         public List<Image> FormFileToImage(List<IFormFile> files, string path);
-        public Task CheckExistedImagesAsync(Post post, AnimalAttributeVM model, AppDbContext _context, IFileService _fileService);
+        public Task CheckExistedImagesAsync(Post post, PostVM model, AppDbContext _context, IFileService _fileService);
     }
 }

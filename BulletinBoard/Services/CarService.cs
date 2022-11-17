@@ -1,5 +1,6 @@
 ﻿using BulletinBoard.Data;
 using BulletinBoard.Data.Enums;
+using BulletinBoard.Data.Helpers;
 using BulletinBoard.Data.ViewModels;
 using BulletinBoard.Models;
 using BulletinBoard.Models.AttributeModels;
@@ -10,11 +11,15 @@ namespace BulletinBoard.Services
 {
     public class CarService : ICategoryService<CarAttributeVM, CarAttribute>
     {
+        private readonly IFileService _fileService;
         private readonly AppDbContext _context;
+        private readonly IImageFormHelper _imageFormHelper;
 
-        public CarService(AppDbContext context)
+        public CarService(AppDbContext context, IFileService fileService, IImageFormHelper imageFormHelper)
         {
             _context = context;
+            _fileService = fileService;
+            _imageFormHelper = imageFormHelper;
         }
 
         public async Task<List<CarAttribute>> GetAllAsync()
@@ -23,7 +28,7 @@ namespace BulletinBoard.Services
             return carPosts;
         }
 
-        public async Task AddAsync(CarAttributeVM car, string userId)
+        public async Task AddAsync(CarAttributeVM item, string userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
@@ -31,9 +36,9 @@ namespace BulletinBoard.Services
             {
                 var newItem = new Post()
                 {
-                    Price = car.Post.Price,
-                    Description = car.Post.Description,
-                    Titile = car.Post.Titile,
+                    Price = item.Post.Price,
+                    Description = item.Post.Description,
+                    Titile = item.Post.Titile,
                     CreatedDate = DateTime.UtcNow,
                     ExpiredDate = DateTime.UtcNow.AddDays(30),
                     User = user,
@@ -44,20 +49,26 @@ namespace BulletinBoard.Services
                     {
                         CarAttribute = new CarAttribute()
                         {
-                            MileagesCar = car.MileagesCar,
-                            VINNumber = car.VINNumber,
-                            GraduationYear = car.GraduationYear,
+                            MileagesCar = item.MileagesCar,
+                            VINNumber = item.VINNumber,
+                            GraduationYear = item.GraduationYear,
                         }
                     },
                     PostStatusId = (int)PostStatuses.Active,
-                    AttributeCategoryId = (int)Categories.Car
+                    CountInFavorites = default,
+                    AttributeCategoryId = (int)Categories.Animal
                 };
+
+                newItem.Images = await _fileService.UploadAsync(item.Post.ImageFile, userId);
+
+                user.UserPostList.Add(newItem);
 
                 await _context.AddAsync(newItem);
                 user.UserPostList.Add(newItem);
                 await _context.SaveChangesAsync();
             }
         }
+
 
         public async Task<bool> EditAsync(CarAttributeVM model)
         {
@@ -72,7 +83,7 @@ namespace BulletinBoard.Services
                 carPost.MainPost.MainPost.Description = model.Post.Description;
                 carPost.MainPost.MainPost.Price = model.Post.Price;
 
-                await _context.SaveChangesAsync();
+                await _imageFormHelper.CheckExistedImagesAsync(carPost.MainPost.MainPost, model.Post, _context, _fileService);
                 return true;
             }
 
@@ -85,7 +96,7 @@ namespace BulletinBoard.Services
 
             if (carPost != null)
             {
-                return new CarAttributeVM()
+                var vm = new CarAttributeVM()
                 {
                     Id = carPost.Id,
                     VINNumber = carPost.VINNumber,
@@ -98,9 +109,12 @@ namespace BulletinBoard.Services
                         Titile = carPost.MainPost.MainPost.Titile
                     }
                 };
+
+                vm.Post.ExistedImage = _imageFormHelper.ImageToFormFile(carPost.MainPost.MainPost);
+                return vm;
             }
 
-            return null;
+            return new CarAttributeVM();
         }
     }
 }
