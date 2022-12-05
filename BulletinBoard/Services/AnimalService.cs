@@ -8,6 +8,7 @@ using BulletinBoard.Models.AttributeModels;
 using BulletinBoard.Services.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using PagedList;
 using System.Drawing;
 using System.Net.Http.Headers;
 
@@ -83,10 +84,18 @@ namespace BulletinBoard.Services
             return false;
         }
 
-        public async Task<List<AnimalAttribute>> GetAllAsync()
+        public async Task<Models.PagedList<AnimalAttribute>> GetAllAsync(int pageNumber)
         {
-            var animalPosts = await _context.AnimalsAttribute.Where(x => x.MainPost.MainPost.IsEnable == true).ToListAsync();
-            return animalPosts;
+
+            var animalPosts = await _context.AnimalsAttribute.Skip((pageNumber - 1) * PageInfo.PageSize).Take(PageInfo.PageSize).
+                Where(x => x.MainPost.MainPost.IsEnable == true).ToListAsync();
+
+            if(animalPosts.Count == 0)
+                return null;
+
+            double animalPostsCount = Math.Ceiling((double)_context.AnimalsAttribute.Where(x => x.MainPost.MainPost.IsEnable == true).Count() / PageInfo.PageSize);
+            var pagedPosts = new Models.PagedList<AnimalAttribute>(animalPosts, pageNumber, animalPostsCount);
+            return pagedPosts;
         }
 
         public async Task<AnimalAttributeVM> GetVMAsync(int id, string userId)

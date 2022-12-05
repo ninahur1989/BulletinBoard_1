@@ -10,6 +10,7 @@ namespace BulletinBoard.Controllers
 {
     public class CarController : Controller
     {
+        private int _pageIndex = PageInfo.PageIndex;
         private readonly ICategoryService<CarAttributeVM, CarAttribute> _service;
 
         public CarController(ICategoryService<CarAttributeVM, CarAttribute> service)
@@ -17,9 +18,10 @@ namespace BulletinBoard.Controllers
             _service = service;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
-            var posts = await _service.GetAllAsync();
+            _pageIndex = pageNumber.HasValue ? Convert.ToInt32(pageNumber.Value) : 1;
+            var posts = await _service.GetAllAsync(_pageIndex);
 
             if (posts == null)
                 return NotFound();
@@ -27,15 +29,15 @@ namespace BulletinBoard.Controllers
         }
 
         [Authorize]
-        public IActionResult Create()
+        public IActionResult AddNewCar()
         {
             return View(new CarAttributeVM());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CarAttributeVM model)
+        public async Task<IActionResult> AddNewCar(CarAttributeVM model)
         {
-            if (model.Post.ImageFile.Count == 0 || model.Post.ImageFile.Count > ImageLimit.ImageLimitPerPost)
+            if (model.Post.ImageFile == null || model.Post.ImageFile.Count > ImageLimit.ImageLimitPerPost)
                 return View(model);
 
             if (ModelState.IsValid)

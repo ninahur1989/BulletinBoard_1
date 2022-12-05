@@ -11,6 +11,7 @@ namespace BulletinBoard.Controllers
 {
     public class AnimalController : Controller
     {
+        private int _pageIndex = PageInfo.PageIndex;
         private readonly ICategoryService<AnimalAttributeVM, AnimalAttribute> _service;
 
         public AnimalController(ICategoryService<AnimalAttributeVM, AnimalAttribute> service)
@@ -18,9 +19,10 @@ namespace BulletinBoard.Controllers
             _service = service;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
-            var posts = await _service.GetAllAsync();
+            _pageIndex = pageNumber.HasValue ? Convert.ToInt32(pageNumber.Value) : 1;
+            var posts = await _service.GetAllAsync(_pageIndex);
 
             if (posts == null)
                 return NotFound();
@@ -28,15 +30,15 @@ namespace BulletinBoard.Controllers
         }
 
         [Authorize]
-        public IActionResult Create()
+        public IActionResult AddNewAnimal()
         {
             return View(new AnimalAttributeVM());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AnimalAttributeVM model)
+        public async Task<IActionResult> AddNewAnimal(AnimalAttributeVM model)
         {
-            if (model.Post.ImageFile.Count == 0 || model.Post.ImageFile.Count > ImageLimit.ImageLimitPerPost)
+            if (model.Post.ImageFile == null || model.Post.ImageFile.Count > ImageLimit.ImageLimitPerPost)
                 return View(model);
 
             if (ModelState.IsValid)

@@ -1,11 +1,13 @@
 ﻿using BulletinBoard.Data;
 using BulletinBoard.Data.Enums;
 using BulletinBoard.Data.Helpers;
+using BulletinBoard.Data.Static;
 using BulletinBoard.Data.ViewModels;
 using BulletinBoard.Models;
 using BulletinBoard.Models.AttributeModels;
 using BulletinBoard.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace BulletinBoard.Services
 {
@@ -22,10 +24,17 @@ namespace BulletinBoard.Services
             _imageFormHelper = imageFormHelper;
         }
 
-        public async Task<List<CarAttribute>> GetAllAsync()
+        public async Task<PagedList<CarAttribute>> GetAllAsync(int pageNumber)
         {
-            var carPosts = await _context.CarsAttribute.Where(x => x.MainPost.MainPost.IsEnable == true).ToListAsync();
-            return carPosts;
+            var carPosts = await _context.AnimalsAttribute.Skip((pageNumber - 1) * PageInfo.PageSize).Take(PageInfo.PageSize).
+                Where(x => x.MainPost.MainPost.IsEnable == true).ToListAsync();
+
+            if (carPosts.Count == 0)
+                return null;
+
+            double animalPostsCount = Math.Ceiling((double)_context.AnimalsAttribute.Where(x => x.MainPost.MainPost.IsEnable == true).Count() / PageInfo.PageSize);
+            var pagedPosts = new Models.PagedList<CarAttribute>((IList<CarAttribute>)carPosts, pageNumber, animalPostsCount);
+            return pagedPosts;
         }
 
         public async Task AddAsync(CarAttributeVM item, string userId)
@@ -68,7 +77,6 @@ namespace BulletinBoard.Services
                 await _context.SaveChangesAsync();
             }
         }
-
 
         public async Task<bool> EditAsync(CarAttributeVM model)
         {
