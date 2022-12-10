@@ -10,7 +10,11 @@ using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
+using Microsoft.Extensions.Options;
 
 namespace BulletinBoard
 {
@@ -25,11 +29,26 @@ namespace BulletinBoard
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
+            services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
+
+            services.Configure<RequestLocalizationOptions>(
+                opt =>
+                {
+                    var supportedCultures = new List<CultureInfo>
+                    {
+                        new CultureInfo("en"),
+                        new CultureInfo("ru"),
+                    };
+                    opt.DefaultRequestCulture = new RequestCulture("en");
+                    opt.SupportedCultures= supportedCultures;
+                    opt.SupportedUICultures= supportedCultures;
+                });
             services.AddDbContext<AppDbContext>(
                  b => b.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
 
-            //services.AddHangfire(
-            //    x => x.UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnectionString")));
+            services.AddHangfire(
+                x => x.UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnectionString")));
 
 
 
@@ -88,6 +107,14 @@ namespace BulletinBoard
             app.UseAuthentication();
             app.UseAuthorization();
 
+            //var supportedCultures = new[] { "en", "ua", "ru" };
+            //var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+            //    .AddSupportedCultures(supportedCultures)
+            //    .AddSupportedUICultures(supportedCultures);
+
+            //app.UseRequestLocalization(localizationOptions);
+
+            app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
             app.UseHangfireDashboard("/dashboard");
 
             app.UseEndpoints(endpoints =>
