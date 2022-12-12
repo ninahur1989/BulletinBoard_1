@@ -74,6 +74,7 @@ namespace BulletinBoard
             services.AddScoped<ICategoryService<CarAttributeVM, CarAttribute>, CarService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICategoryService<AnimalAttributeVM, AnimalAttribute>, AnimalService>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
