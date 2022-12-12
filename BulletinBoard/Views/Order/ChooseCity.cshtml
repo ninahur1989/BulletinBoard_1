@@ -7,10 +7,10 @@
             <div class="col-md-8 offset-2">
                 <form asp-action="ChooseWarehouse" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <select name="user_profile_color_1">
+                    <select id="city" name="city">
                         @foreach (var item in Model)
                         {
-                            <option >@item.Description</option>
+                            <option>@item.Description</option>
                         }
                     </select>
                     <div class="form-group">

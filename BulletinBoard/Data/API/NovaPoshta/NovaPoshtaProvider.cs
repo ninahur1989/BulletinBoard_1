@@ -24,21 +24,21 @@ namespace BulletinBoard.Data.API.NovaPoshta
 
         //public IConfiguration Configuration { get; }
 
-        private List<T> CheckToSucces<T>(HttpResponseMessage result)
+        private T? CheckToSucces<T>(HttpResponseMessage result )
         {
             if (result.IsSuccessStatusCode)
             {
                 var content = result.Content.ReadAsStringAsync().Result;
                 JObject json = JObject.Parse(content);
-                IRequest<T> item = Newtonsoft.Json.JsonConvert.DeserializeObject<IRequest<T>>(content);
+                T item = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(content);
 
                 if (item != null)
                 {
-                    return item.data;
+                    return item;
                 }
-                return new List<T>();
+                return default(T);
             };
-            return new List<T>();
+            return default(T);
         }
 
         public async Task<List<City>> GetCitys()
@@ -52,11 +52,21 @@ namespace BulletinBoard.Data.API.NovaPoshta
             };
 
             var result = await _httpClient.PostAsync(BaseUrl + "/cities", data.AsJson());
-            return CheckToSucces<City>(result);
+            var checkToSucces = CheckToSucces<CitiesRequest>(result);
+
+            if (checkToSucces != null)
+            {
+                return checkToSucces.data;
+            }
+            return new List<City>();
         }
 
         public async Task<List<Warehouse>> GetWarehouses(string city)
         {
+            if(city == null)
+            {
+                return new List<Warehouse>();
+            }
             var data = new
             {
                 apiKey = _apiKey,
@@ -69,7 +79,13 @@ namespace BulletinBoard.Data.API.NovaPoshta
             };
 
             var result = await _httpClient.PostAsync(BaseUrl + "/districts", data.AsJson());
-            return CheckToSucces<Warehouse>(result);
+            var checkToSucces = CheckToSucces<WarehousesRequest>(result);
+
+            if (checkToSucces != null)
+            {
+                return checkToSucces.data;
+            }
+            return new List<Warehouse>();
         }
     }
 }
