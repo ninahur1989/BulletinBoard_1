@@ -16,13 +16,13 @@ namespace BulletinBoard.Data.API.NovaPoshta
         private readonly string _apiKey;
         const string BaseUrl = "https://api.novaposhta.ua/v2.0/json//api/partner";
 
-        //public NovaPoshtaProvider(IConfiguration configuration)
-        //{
-        //    Configuration = configuration;
-        //    _apiKey = Configuration.GetValue<string>("NovaPoshtaKey");
-        //}
+        public NovaPoshtaProvider(IConfiguration configuration)
+        {
+            Configuration = configuration;
+            _apiKey = Configuration.GetValue<string>("NovaPoshtaKey");
+        }
 
-        //public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         private T? CheckToSucces<T>(HttpResponseMessage result )
         {

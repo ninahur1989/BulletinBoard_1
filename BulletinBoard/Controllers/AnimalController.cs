@@ -9,6 +9,7 @@ using BulletinBoard.Data.Static;
 
 namespace BulletinBoard.Controllers
 {
+    [Authorize]
     public class AnimalController : Controller
     {
         private int _pageIndex = PageInfo.PageIndex;
@@ -19,6 +20,7 @@ namespace BulletinBoard.Controllers
             _service = service;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index(int? pageNumber)
         {
             _pageIndex = pageNumber.HasValue ? Convert.ToInt32(pageNumber.Value) : 1;
@@ -28,8 +30,7 @@ namespace BulletinBoard.Controllers
                 return NotFound();
             return View(posts);
         }
-
-        [Authorize]
+      
         public IActionResult AddNewAnimal()
         {
             return View(new AnimalAttributeVM());

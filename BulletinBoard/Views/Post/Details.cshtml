@@ -31,6 +31,9 @@
                     {
                         <button id="follow-button" onclick="favorite('@Model.Id.ToString()')"></button>
                     }
+                    <a class="bi bi-person-circle" asp-controller="Order" asp-action="ChooseCity" asp-route-id="@Model.Id">
+                       BUY
+                    </a>
                 </div>
             </div>
         </div>

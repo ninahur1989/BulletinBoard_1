@@ -5,7 +5,6 @@ namespace BulletinBoard.Services
 {
     public class FileService : IFileService
     {
-        const string ImageFolderPath = @"C:\Users\Admin\Desktop\ds\BulletinBoard\BulletinBoard\wwwroot\";
         private readonly IWebHostEnvironment _hostingEnvironment;
 
         public FileService(IWebHostEnvironment hostingEnvironment)
@@ -43,10 +42,8 @@ namespace BulletinBoard.Services
         {
             foreach (var file in images)
             {
-                var a = ImageFolderPath + file.FolderName + file.Name;
-                File.Delete(ImageFolderPath + file.FolderName + file.Name);
+                File.Delete(_hostingEnvironment.WebRootPath + file.FolderName + file.Name);
             }
         }
-
     }
 }
