@@ -1,8 +1,11 @@
 ﻿using Azure.Messaging;
 using BulletinBoard.Data;
+using BulletinBoard.Models;
 using BulletinBoard.Models.NovaPoshtaModels;
 using BulletinBoard.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Security.Claims;
@@ -11,6 +14,7 @@ using System.Text;
 
 namespace BulletinBoard.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly IOrderService _service;
@@ -28,7 +32,7 @@ namespace BulletinBoard.Controllers
             var postId = HttpContext.Request.Cookies["postId"];
             var city = HttpContext.Request.Cookies["city"];
 
-            var order = await _service.CreateOrder(userId, postId, city);
+            var order = await _service.CreateOrder(warehouse, city, userId, int.Parse(postId));
 
             if (order == null)
             {
@@ -38,10 +42,19 @@ namespace BulletinBoard.Controllers
 
             return View(order);
         }
+        public async Task<IActionResult> CompleteOrder(Order order)
+        {
+            if (ModelState.IsValid)
+            {
+                await _service.CompleteOrder(order);
+                return RedirectToAction("Index", "Home");
+            }
+            return RedirectToAction("Index",order.Warehouse);
+        }
 
         public async Task<IActionResult> ChooseCity(int id)
         {
-            if (_context.Posts.FirstOrDefault(x=>x.Id == id).UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+            if (_context.Posts.FirstOrDefault(x => x.Id == id).UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
             {
                 return NotFound("error it is your post");
             }

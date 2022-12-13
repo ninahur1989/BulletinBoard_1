@@ -7,8 +7,8 @@ namespace BulletinBoard.Services.Interfaces
     public interface IOrderService
     {
         public Task<List<City>> GetAllCities();
-        public Task<Order> CreateOrder(string warehouse, string userId, string city);
+        public Task<Order> CreateOrder(string warehouse, string city, string userId, int postId);
         public Task<List<Warehouse>> GetAllWarehouses(string city);
-
+        public Task CompleteOrder(Order order);
     }
 }

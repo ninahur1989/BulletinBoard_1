@@ -23,7 +23,13 @@ namespace BulletinBoard.Services
             return await _novaPoshtaProvider.GetCitys();
         }
 
-        public async Task<Order> CreateOrder(string warehouse, string userId, string city)
+        public async Task CompleteOrder(Order order)
+        {
+            order.CreatedDate = DateTime.UtcNow;
+            await _context.AddAsync(order);
+            await _context.SaveChangesAsync();
+        }
+        public async Task<Order> CreateOrder(string warehouse, string city , string userId, int postId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user != null)
@@ -35,6 +41,8 @@ namespace BulletinBoard.Services
                 order.City = city;  
                 order.PhoneNumber = user.PhoneNumber;
                 order.Email= user.Email;
+                order.PostId = postId;
+                order.UserId= userId;
                 return order;
             }
             return null;

@@ -5,12 +5,12 @@
     <div class="col-md-8 offset-2">
         <div class="row">
             <div class="col-md-8 offset-2">
-                <form asp-action="index" enctype="multipart/form-data">
+                <form asp-action="Index" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <select id="warehouse" name="warehouse">
                         @foreach (var item in Model)
                         {
-                            <option id="warehouse">@item.Description</option>
+                            <option>@item.Description</option>
                         }
                     </select>
                     <div class="form-group">
@@ -21,3 +21,4 @@
         </div>
     </div>
 </div>
+>

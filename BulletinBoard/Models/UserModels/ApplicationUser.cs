@@ -14,6 +14,8 @@ namespace BulletinBoard.Models.UserModels
 
         public virtual List<Post> UserPostList { get; set; }
 
+        public virtual List<Order> Orders { get; set; }
+
         public virtual List<Favorite> FavoritePostList { get; set; }
     }
 }

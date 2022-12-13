@@ -1,5 +1,93 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Order
+@*<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="row">
+            <div class="col-md-8 offset-2">
+
+                <form asp-action="CompleteOrder" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="City" class="control-label"></label>
+                                @Model.City
+                                <span asp-validation-for="City" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Warehouse" class="control-label"></label>
+                                @Model.Warehouse
+                                <span asp-validation-for="Warehouse" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FirstName" class="control-label"></label>
+                                <input asp-for="FirstName" type="text" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="LastName" class="control-label"></label>
+                                <textarea asp-for="LastName" class="form-control"></textarea>
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-outline-success float-right" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>*@
+<body>
+    <h1>Edit a Movie</h1>
+    @Html.ValidationSummary()
+    <form asp-action="CompleteOrder" enctype="multipart/form-data" method="post">
+        <fieldset>
+            <legend>Movie Information</legend>
+
+            <p>
+                <label for="LastName">LastName:</label>
+                <input type="text" name="LastName" value="@Model.LastName" />
+            </p>
+
+            <p>
+                <label for="FirstName">FirstName:</label>
+                <input type="text" name="FirstName" value="@Model.FirstName" />
+            </p>
+            <p>
+                <label for="Email">Email:</label>
+                <input type="text" name="Email" value="@Model.Email" />
+            </p>
+            <div id="divCheckbox" style="display: none;">
+
+                <p>
+                    <label for="Warehouse">Warehouse:</label>
+                    <input type="text" name="Warehouse" value="@Model.Warehouse" />
+                </p>
+                <p>
+                    <label for="PostId">PostId:</label>
+                    <input type="text" name="PostId" value="@Model.PostId" />
+                </p>
+                <p>
+                    <label for="UserId">UserId:</label>
+                    <input type="text" name="UserId" value="@Model.UserId" />
+                </p>
+                <p>
+                    <label for="City">City:</label>
+                    <input type="text" name="City" value="@Model.City" />
+                </p>
+                <p>
+                    <label for="PhoneNumber">PhoneNumber:</label>
+                    <input type="text" name="PhoneNumber" value="@Model.PhoneNumber" />
+                </p>
+            </div>
+
+
+            <p><input type="submit" name="buttonSubmit" value="Submit Changes" /></p>
+        </fieldset>
+    </form>
+</body>
