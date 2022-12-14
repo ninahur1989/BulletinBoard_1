@@ -24,6 +24,37 @@ namespace BulletinBoard.Services
             return await _novaPoshtaProvider.GetCitys();
         }
 
+        public async Task RemoveOrderAsync(int orderid)
+        {
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderid);
+
+            if (order != null)
+            {
+                _context.Remove(order);
+                await _context.SaveChangesAsync();
+            }
+        }
+        public async Task CompleteOrderAsync(int orderid)
+        {
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderid);
+
+            if (order != null)
+            {
+                order.Status= OrderStatus.Completed;
+                await _context.SaveChangesAsync();
+            }
+        }
+        public async Task AcceptOrderAsync(int orderid)
+        {
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderid);
+
+            if (order != null)
+            {
+                order.Status = OrderStatus.Accepted;
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public async Task CompleteOrder(Order order)
         {
             try

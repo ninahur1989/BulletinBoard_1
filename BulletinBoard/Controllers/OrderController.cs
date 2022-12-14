@@ -1,5 +1,6 @@
 ﻿using Azure.Messaging;
 using BulletinBoard.Data;
+using BulletinBoard.Data.Enums;
 using BulletinBoard.Models;
 using BulletinBoard.Models.NovaPoshtaModels;
 using BulletinBoard.Services.Interfaces;
@@ -40,9 +41,10 @@ namespace BulletinBoard.Controllers
                 return NotFound();
             }
 
-
             return View(order);
         }
+
+        [HttpPost]
         public async Task<IActionResult> CompleteOrder(Order order)
         {
             if (ModelState.IsValid)
@@ -50,11 +52,32 @@ namespace BulletinBoard.Controllers
                 await _service.CompleteOrder(order);
                 return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Index",order.Warehouse);
+            return RedirectToAction("Index", order.Warehouse);
         }
+
         public async Task<IActionResult> Details(int orderId)
         {
             return View(await _context.Orders.FirstOrDefaultAsync(x => x.Id == orderId));
+        }
+
+        public async Task<IActionResult> RemoveOrder(int orderId, OrderType type)
+        {
+            await _service.RemoveOrderAsync(orderId);
+            return RedirectToAction("MyOrders", new RouteValueDictionary(
+                    new { controller = "Account", action = "MyOrders", type = type }));
+        }
+
+        public async Task<IActionResult> AcceptOrder(int orderId, OrderType type)
+        {
+            await _service.AcceptOrderAsync(orderId);
+            return RedirectToAction("MyOrders", new RouteValueDictionary(
+                    new { controller = "Account", action = "MyOrders", type = type }));
+        }
+        public async Task<IActionResult> CompleteOrder(int orderId, OrderType type)
+        {
+            await _service.CompleteOrderAsync(orderId);
+            return RedirectToAction("MyOrders", new RouteValueDictionary(
+                    new { controller = "Account", action = "MyOrders", type = type }));
         }
 
         public async Task<IActionResult> ChooseCity(int id)
