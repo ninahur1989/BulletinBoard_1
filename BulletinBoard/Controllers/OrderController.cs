@@ -5,6 +5,7 @@ using BulletinBoard.Models.NovaPoshtaModels;
 using BulletinBoard.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -50,6 +51,10 @@ namespace BulletinBoard.Controllers
                 return RedirectToAction("Index", "Home");
             }
             return RedirectToAction("Index",order.Warehouse);
+        }
+        public async Task<IActionResult> Details(int orderId)
+        {
+            return View(await _context.Orders.FirstOrDefaultAsync(x => x.Id == orderId));
         }
 
         public async Task<IActionResult> ChooseCity(int id)

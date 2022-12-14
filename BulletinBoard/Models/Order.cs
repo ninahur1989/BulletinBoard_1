@@ -1,4 +1,6 @@
-﻿namespace BulletinBoard.Models
+﻿using BulletinBoard.Data.Enums;
+
+namespace BulletinBoard.Models
 {
     public class Order
     {
@@ -12,5 +14,10 @@
         public string Email { get; set; }
         public string? PhoneNumber { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        public OrderType? Type { get; set; }
+
+        public OrderStatus? Status { get; set; }
+
     }
 }

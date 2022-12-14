@@ -1,5 +1,6 @@
 ﻿using BulletinBoard.Data;
 using BulletinBoard.Data.API.NovaPoshta;
+using BulletinBoard.Data.Enums;
 using BulletinBoard.Models;
 using BulletinBoard.Models.NovaPoshtaModels;
 using BulletinBoard.Services.Interfaces;
@@ -25,11 +26,34 @@ namespace BulletinBoard.Services
 
         public async Task CompleteOrder(Order order)
         {
-            order.CreatedDate = DateTime.UtcNow;
-            await _context.AddAsync(order);
-            await _context.SaveChangesAsync();
+            try
+            {
+                order.CreatedDate = DateTime.UtcNow;
+                order.Type = OrderType.Purchase;
+                order.Status = OrderStatus.Waiting;
+
+
+                _context.Orders.Add(order);
+                await _context.SaveChangesAsync();
+
+
+                var post = await _context.Posts.FirstOrDefaultAsync(c => c.Id == order.PostId);
+                if (post != null)
+                {
+                    order.UserId = post.UserId;
+                    order.Type = OrderType.Order;
+                    order.Id = default;
+                    _context.Orders.Add(order);
+                    await _context.SaveChangesAsync();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
-        public async Task<Order> CreateOrder(string warehouse, string city , string userId, int postId)
+        public async Task<Order> CreateOrder(string warehouse, string city, string userId, int postId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user != null)
@@ -38,11 +62,12 @@ namespace BulletinBoard.Services
                 order.Warehouse = warehouse;
                 order.FirstName = user.UserName;
                 order.LastName = user.FullName;
-                order.City = city;  
+                order.City = city;
                 order.PhoneNumber = user.PhoneNumber;
-                order.Email= user.Email;
+                order.Email = user.Email;
                 order.PostId = postId;
-                order.UserId= userId;
+                order.UserId = userId;
+
                 return order;
             }
             return null;

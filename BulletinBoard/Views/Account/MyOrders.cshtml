@@ -1,0 +1,18 @@
+﻿@model List<Order>
+
+<body>
+    @foreach (var item in Model)
+    {
+        <div class="card" style="width: 18rem;">
+            <a asp-controller="Order" asp-action="Details" asp-route-orderId="@item.Id">
+                <div>
+                    дата
+                    @item.CreatedDate
+                </div>
+                <div>
+                    @item.Status
+                </div>
+            </a>
+        </div>
+    }
+</body>

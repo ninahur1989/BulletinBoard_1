@@ -27,7 +27,7 @@ namespace BulletinBoard.Controllers
             var posts = await _service.GetAllAsync(_pageIndex);
 
             if (posts == null)
-                return NotFound();
+                return NotFound("");
             return View(posts);
         }
       

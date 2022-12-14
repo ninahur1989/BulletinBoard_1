@@ -49,5 +49,17 @@ namespace BulletinBoard.Services
 
             return new List<Post>();
         }
+       
+        public async Task<List<Order>> GetOrdersAsync(string userId, OrderType type)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId );
+
+            if (user != null)
+            {
+                return _context.Orders.Where(c=>c.UserId == userId && c.Type == type).ToList();
+            }
+
+            return new List<Order>();
+        }
     }
 }

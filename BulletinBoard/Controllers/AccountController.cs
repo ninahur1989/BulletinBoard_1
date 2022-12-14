@@ -52,6 +52,13 @@ namespace BulletinBoard.Controllers
         }
 
         public IActionResult Register() => View(new RegisterVM());
+        public IActionResult Orders() => View();
+
+        public async Task<IActionResult> MyOrders(OrderType type)
+        {
+            var orders = await _accountService.GetOrdersAsync(User.FindFirstValue(ClaimTypes.NameIdentifier), type);
+            return View(orders);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM registerVM)
