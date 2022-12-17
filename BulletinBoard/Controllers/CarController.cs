@@ -21,7 +21,7 @@ namespace BulletinBoard.Controllers
         public async Task<IActionResult> Index(int? pageNumber)
         {
             _pageIndex = pageNumber.HasValue ? Convert.ToInt32(pageNumber.Value) : 1;
-            var posts = await _service.GetAllAsync(_pageIndex);
+            var posts = await _service.GetAllAsync(_pageIndex,null,null);
 
             if (posts == null)
                 return NotFound();
@@ -32,6 +32,17 @@ namespace BulletinBoard.Controllers
         public IActionResult AddNewCar()
         {
             return View(new CarAttributeVM());
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Filter(int? pageNumber, int minMilles, int maxMilles)
+        {
+            _pageIndex = pageNumber.HasValue ? Convert.ToInt32(pageNumber.Value) : 1;
+            var posts = await _service.GetAllAsync(_pageIndex, minMilles, maxMilles);
+
+            if (posts == null)
+                return NotFound("");
+            return View("Index", posts);
         }
 
         [HttpPost]

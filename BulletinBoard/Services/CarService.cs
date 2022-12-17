@@ -24,16 +24,25 @@ namespace BulletinBoard.Services
             _imageFormHelper = imageFormHelper;
         }
 
-        public async Task<PagedList<CarAttribute>> GetAllAsync(int pageNumber)
+        public async Task<PagedList<CarAttribute>> GetAllAsync(int pageNumber, int? minMilles , int? maxMilles)
         {
-            var carPosts = await _context.AnimalsAttribute.Skip((pageNumber - 1) * PageInfo.PageSize).Take(PageInfo.PageSize).
-                Where(x => x.MainPost.MainPost.IsEnable == true).ToListAsync();
+            var carPosts = new List<CarAttribute>();
+            if (minMilles != null && maxMilles != null)
+            {
+                carPosts = await _context.CarsAttribute.Skip((pageNumber - 1) * PageInfo.PageSize).Take(PageInfo.PageSize).
+              Where(x => x.MainPost.MainPost.IsEnable == true).Where(x => x.MileagesCar <= maxMilles && x.MileagesCar > minMilles).ToListAsync();
+            }
+            else
+            {
+                carPosts = await _context.CarsAttribute.Skip((pageNumber - 1) * PageInfo.PageSize).Take(PageInfo.PageSize).
+              Where(x => x.MainPost.MainPost.IsEnable == true).ToListAsync();
+            }
 
             if (carPosts.Count == 0)
                 return null;
 
             double animalPostsCount = Math.Ceiling((double)_context.AnimalsAttribute.Where(x => x.MainPost.MainPost.IsEnable == true).Count() / PageInfo.PageSize);
-            var pagedPosts = new Models.PagedList<CarAttribute>((IList<CarAttribute>)carPosts, pageNumber, animalPostsCount);
+            var pagedPosts = new Models.PagedList<CarAttribute>(carPosts, pageNumber, animalPostsCount);
             return pagedPosts;
         }
 

@@ -8,6 +8,6 @@ namespace BulletinBoard.Services.Interfaces
         Task AddAsync(modelVM item, string userId);
         Task<bool> EditAsync(modelVM item);
         Task<modelVM> GetVMAsync(int id, string userId);
-        Task<PagedList<model>> GetAllAsync(int pageNumber);
+        Task<PagedList<model>> GetAllAsync(int pageNumber,int? min, int? max);
     }
 }

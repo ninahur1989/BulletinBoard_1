@@ -24,13 +24,24 @@ namespace BulletinBoard.Controllers
         public async Task<IActionResult> Index(int? pageNumber)
         {
             _pageIndex = pageNumber.HasValue ? Convert.ToInt32(pageNumber.Value) : 1;
-            var posts = await _service.GetAllAsync(_pageIndex);
+            var posts = await _service.GetAllAsync(_pageIndex,null,null);
 
             if (posts == null)
                 return NotFound("");
             return View(posts);
         }
-      
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Filter(int? pageNumber, int minAge, int maxAge)
+        {
+            _pageIndex = pageNumber.HasValue ? Convert.ToInt32(pageNumber.Value) : 1;
+            var posts = await _service.GetAllAsync(_pageIndex,minAge,maxAge);
+
+            if (posts == null)
+                return NotFound("");
+            return View("Index",posts);
+        }
+
         public IActionResult AddNewAnimal()
         {
             return View(new AnimalAttributeVM());

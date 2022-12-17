@@ -84,11 +84,19 @@ namespace BulletinBoard.Services
             return false;
         }
 
-        public async Task<Models.PagedList<AnimalAttribute>> GetAllAsync(int pageNumber)
+        public async Task<Models.PagedList<AnimalAttribute>> GetAllAsync(int pageNumber , int? minAge, int? maxAge)
         {
-
-            var animalPosts = await _context.AnimalsAttribute.Skip((pageNumber - 1) * PageInfo.PageSize).Take(PageInfo.PageSize).
-                Where(x => x.MainPost.MainPost.IsEnable == true).ToListAsync();
+            var animalPosts= new List<AnimalAttribute>();
+            if (minAge!= null && maxAge != null)
+            {
+                 animalPosts = await _context.AnimalsAttribute.Skip((pageNumber - 1) * PageInfo.PageSize).Take(PageInfo.PageSize).
+               Where(x => x.MainPost.MainPost.IsEnable == true).Where(x=>x.Age <= maxAge && x.Age>minAge).ToListAsync();
+            }
+            else
+            {
+                 animalPosts = await _context.AnimalsAttribute.Skip((pageNumber - 1) * PageInfo.PageSize).Take(PageInfo.PageSize).
+               Where(x => x.MainPost.MainPost.IsEnable == true).ToListAsync();
+            }
 
             if(animalPosts.Count == 0)
                 return null;
