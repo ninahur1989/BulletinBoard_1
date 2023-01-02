@@ -1,4 +1,5 @@
 ﻿using BulletinBoard.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
@@ -29,6 +30,12 @@ namespace BulletinBoard.Controllers
         {
             var culture = _localization["culture"];
             ViewData["culture"] = culture;
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult Notification()
+        {
             return View();
         }
 

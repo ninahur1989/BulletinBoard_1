@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Microsoft.Extensions.Options;
+using BulletinBoard.Data.Hubs;
 
 namespace BulletinBoard
 {
@@ -29,6 +30,7 @@ namespace BulletinBoard
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();     
             services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
             services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
 
@@ -123,6 +125,8 @@ namespace BulletinBoard
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapHub<NotificationHub>("/notification");
             });
 
             AppDbInitializer.Seed(app);
