@@ -1,0 +1,73 @@
+﻿@using System.Security.Claims
+@model Post
+<body onload="isFavorite('@Model.Id.ToString()')">
+    <div class="row">
+        <div class="col-md-8 offset-2">
+            <div class="card mb-12">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <a class="bi bi-person-circle" asp-action="UserPosts" asp-route-id="@Model.Id"> 
+                            @Model.User.FullName
+                        </a>
+                        <div class="col-md-6">
+                            <img src="~/uploads/@Model.Images[0].Name" width="100%">
+                        </div>
+                        <div class="card-header text-white bg-info">
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @Model.Titile
+                                </h5>
+                            </p>
+                        </div>
+                        <div class="card-header text-white bg-info">
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @Model.Price
+                                </h5>
+                            </p>
+                        </div>
+                    </div>
+                    @if (Model.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+                    {
+                        <button id="follow-button" onclick="favorite('@Model.Id.ToString()')"></button>
+                    }
+                    <a class="bi bi-person-circle" asp-controller="Order" asp-action="ChooseCity" asp-route-id="@Model.Id">
+                       BUY
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function favorite(id) {
+        $.ajax({
+            type: "POST",
+            url: "/Post/Favorite",
+            data: { id },
+            success: function(json) {
+                if (json == true) {
+                    $('#follow-button').html('Add to Favorite')
+                }
+                else {
+                    $('#follow-button').html('Remove from Favorite')
+                }
+            }
+        })
+    }
+    function isFavorite(id) {
+        $.ajax({
+            type: "POST",
+            url: "/Post/IsFavorite",
+            data: { id },
+            success: function(json) {
+                if (json == false) {
+                    $('#follow-button').html('Add to Favorite')
+                }
+                else {
+                    $('#follow-button').html('Remove from Favorite')
+                }
+            }
+        })
+    }
+</script>k

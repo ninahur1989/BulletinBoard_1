@@ -1,0 +1,46 @@
+﻿@model Order
+<body>
+    @Html.ValidationSummary()
+    <form asp-action="CompleteOrder" enctype="multipart/form-data" method="post">
+        <fieldset>
+
+            <p>
+                <label for="LastName">LastName:</label>
+                <input type="text" name="LastName" value="@Model.LastName" />
+            </p>
+
+            <p>
+                <label for="FirstName">FirstName:</label>
+                <input type="text" name="FirstName" value="@Model.FirstName" />
+            </p>
+            <p>
+                <label for="Email">Email:</label>
+                <input type="text" name="Email" value="@Model.Email" />
+            </p>
+            <div id="divCheckbox" style="display: none;">
+
+                <p>
+                    <label for="Warehouse">Warehouse:</label>
+                    <input type="text" name="Warehouse" value="@Model.Warehouse" />
+                </p>
+                <p>
+                    <label for="PostId">PostId:</label>
+                    <input type="text" name="PostId" value="@Model.PostId" />
+                </p>
+                <p>
+                    <label for="UserId">UserId:</label>
+                    <input type="text" name="UserId" value="@Model.UserId" />
+                </p>
+                <p>
+                    <label for="City">City:</label>
+                    <input type="text" name="City" value="@Model.City" />
+                </p>
+                <p>
+                    <label for="PhoneNumber">PhoneNumber:</label>
+                    <input type="text" name="PhoneNumber" value="@Model.PhoneNumber" />
+                </p>
+            </div>
+            <p><input type="submit" name="buttonSubmit" value="Submit Changes" /></p>
+        </fieldset>
+    </form>
+</body>

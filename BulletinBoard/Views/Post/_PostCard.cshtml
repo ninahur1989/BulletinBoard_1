@@ -1,0 +1,42 @@
+﻿@model Post
+<div class="css-1pze2fb">
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-6">
+                <img src="~/uploads/@Model.Images[0].Name" width="100%">
+            </div>
+            <div class="col-md-12">
+                <div class="card-header text-white bg-info">
+                    <p class="card-text">
+                        <h5 class="card-title">
+                            @Model.Titile
+                        </h5>
+                    </p>
+                </div>
+                <div>
+                    <p class="card-text">
+                        <h5 class="card-title">
+                            @Model.Price
+                        </h5>
+                    </p>
+                </div>
+                <div>
+                    <p class="card-text">
+                        <h5 class="card-title">
+                            @Model.CreatedDate -
+                        </h5>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card-footer ">
+                    <p class="card-text">
+                        <a class="btn btn-outline-primary float-right" asp-controller="Post" asp-action="Details" asp-route-id="@Model.Id">
+                            <i class="bi bi-eye-fill"></i> Show Details
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+﻿@using BulletinBoard.Data.Enums
+@model Order
+
+<body>
+
+    <p>
+        Status @Model.Status
+    </p>
+    <p>
+        LastName  @Model.LastName
+    </p>
+
+    <p>
+        FirstName  @Model.FirstName
+    </p>
+    <p>
+        Email   @Model.Email
+    </p>
+
+    <p>
+        Warehouse   @Model.Warehouse
+    </p>
+    <p>
+        PostId  @Model.PostId
+    </p>
+    <p>
+        City   @Model.City
+    </p>
+    <p>
+        PhoneNumber  @Model.PhoneNumber
+    </p>
+    @{
+        if (Model.Type == OrderType.Purchase)
+        {
+            <div style="background-color:orangered">
+                <a asp-action="RemoveOrder" asp-route-orderId="@Model.Id" asp-route-type="@Model.Type">
+                    <div>Cancel</div>
+                </a>
+            </div>
+        }
+        else
+        {
+            if (Model.Status == OrderStatus.Waiting)
+            {
+                <div style="background-color:orangered">
+                    <a asp-action="RemoveOrder" asp-route-orderId="@Model.Id" asp-route-type="@Model.Type">
+                        <div>Delete</div>
+                    </a>
+                </div>
+                <div style="background-color:yellow">
+                    <a asp-action="AcceptOrder" asp-route-orderId="@Model.Id" asp-route-type="@Model.Type">
+                        <div>Accept</div>
+                    </a>
+                </div>
+            }
+            else if (Model.Status == OrderStatus.Accepted)
+            {
+                <div style="background-color:fuchsia">
+                    <a asp-action="CompleteOrder" asp-route-orderId="@Model.Id" asp-route-type="@Model.Type">
+                        <div>Comlete</div>
+                    </a>
+                </div>
+            }
+        }
+    }
+</body>

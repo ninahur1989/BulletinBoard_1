@@ -1,0 +1,51 @@
+﻿@model List<Post>
+
+<ul class="navbar-nav flex-grow-1">
+    <li class="nav-item">
+        @await Html.PartialAsync("_AccountNavigation.cshtml" )
+    </li>
+</ul>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="css-1pze2fb">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        <img src="~/uploads/@item.Images[0].Name" width="100%">
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-header text-white bg-info">
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @item.Titile
+                                </h5>
+                            </p>
+                        </div>
+                        <div>
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @item.Price
+                                </h5>
+                            </p>
+                        </div>
+                        <div>
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @item.CreatedDate -
+                                </h5>
+                            </p>
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @item.ExpiredDate
+                                </h5>
+                            </p>
+                        </div>
+                    </div>
+                      @await Html.PartialAsync("_AccountAction.cshtml" , (Post)item)
+                </div>
+            </div>
+        </div>
+    }
+</div>

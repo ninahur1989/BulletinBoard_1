@@ -1,0 +1,72 @@
+﻿@using BulletinBoard.Models.AttributeModels
+@model PagedList.IPagedList<CarAttribute>
+
+<div class="row">
+    <form asp-action="Filter" enctype="multipart/form-data" method="post">
+        <fieldset>
+
+            <p>
+                <label for="minMilles">from Milles:</label>
+                <input type="number" name="minMilles" value=0 />
+            </p>
+            <p>
+                <label for="maxMilles">to Milles:</label>
+                <input type="number" name="maxMilles" value=2020202 />
+            </p>
+
+            <p><input type="submit" name="buttonSubmit" value="Submit Filters" /></p>
+        </fieldset>
+    </form>
+    @foreach (var item in Model)
+    {
+        <a asp-controller="Post" asp-action="Details" asp-route-id="@item.MainPost.MainPost.Id">
+            <div class="css-1pze2fb">
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-12">
+                            <div class="card-header text-white bg-info">
+                                <p class="card-text">
+                                    <h5 class="card-title">
+                                        @item.MainPost.MainPost.Titile
+                                    </h5>
+                                </p>
+                            </div>
+                            <div>
+                                <p class="card-text">
+                                    <h5 class="card-title">
+                                        @item.MainPost.MainPost.Price
+                                    </h5>
+                                </p>
+                            </div>
+                            <div>
+                                <p class="card-text">
+                                    <h5 class="card-title">
+                                        @item.MainPost.MainPost.CreatedDate
+                                    </h5>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    }
+</div>
+<footer>
+    <div style=" text-align:center;">
+        <span>
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageNumber - 1 == 0 ? Model.PageNumber:Model.PageNumber-1)"
+               class="bi bi-chevron-left" style="background-color:darkorange;width:20%;text-align:center;padding:7px;"></a>
+        </span>
+        <span>
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+        </span>
+        <span>
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageNumber + 1 > Model.PageCount ? Model.PageNumber:Model.PageNumber+1)"
+               class="bi bi-chevron-right" style="background-color:darkorange;width:20%;text-align:center;padding:7px;"></a>
+            </a>
+        </span>
+    </div>
+</footer>

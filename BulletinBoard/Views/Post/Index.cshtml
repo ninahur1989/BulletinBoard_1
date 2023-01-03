@@ -1,0 +1,9 @@
+﻿@model List<Post>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        @await Html.PartialAsync("_PostCard.cshtml" , (Post)item)
+    }
+</div>
+
