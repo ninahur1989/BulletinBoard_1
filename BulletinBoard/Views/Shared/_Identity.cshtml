@@ -21,9 +21,6 @@ else
             <a asp-controller="Home" asp-action="Notification">
                 <i class="bi bi-list"></i> Notification
             </a>
-            <a asp-controller="Home" asp-action="Chat">
-                <i class="bi bi-list"></i> Anonymous chat with out community members
-            </a>
             @if (User.IsInRole("Admin"))
             {
                 <a class="dropdown-item" asp-controller="Account" asp-action="Users">
